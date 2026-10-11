@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Политика конфиденциальности — Название сайта</title>
+  <title>Политика конфиденциальности — салон «Каре»</title>
   <meta name="description" content="Как мы обрабатываем и защищаем персональные данные, которые вы оставляете на сайте.">
   <link rel="canonical" href="https://example.ru/privacy.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/fira-sans-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/main.js" defer></script>
 </head>
@@ -15,7 +16,7 @@
 
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="logo" href="./">Логотип</a>
+      <a class="logo" href="./" aria-label="Каре, на главную">Каре</a>
     </div>
   </header>
 
@@ -46,8 +47,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>&copy; <span data-year>2026</span> Название</p>
+    <div class="container site-footer__inner">
+      <p class="site-footer__logo">Каре</p>
+      <p>&copy; <span data-year>2026</span> Салон «Каре»</p>
     </div>
   </footer>
 </body>

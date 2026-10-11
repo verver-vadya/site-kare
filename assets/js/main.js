@@ -99,3 +99,26 @@ document.querySelectorAll("dialog.sheet").forEach((sheet) => {
     else opener?.focus({ preventScroll: true });
   });
 });
+
+// Запись: клик по услуге в прайсе или по «Записаться к …» сразу выбирает её в форме
+const bookingForm = document.querySelector(".booking__form");
+if (bookingForm) {
+  const pick = (select, value) => {
+    if (!select || !value) return;
+    const option = [...select.options].find((o) => (o.value || o.text) === value);
+    if (option) select.value = option.value || option.text;
+  };
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-service], [data-master]");
+    if (!link) return;
+    pick(bookingForm.elements.service, link.dataset.service);
+    pick(bookingForm.elements.master, link.dataset.master);
+  });
+  // Записаться можно с сегодняшнего дня; дата по местному времени, а не UTC
+  const date = bookingForm.elements.date;
+  if (date) {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    date.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  }
+}

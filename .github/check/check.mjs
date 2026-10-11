@@ -644,12 +644,25 @@ async function fillValid(form) {
     const type = await input.getAttribute("type");
     if (["hidden", "submit"].includes(type) || (await input.getAttribute("tabindex")) === "-1") continue;
     if (type === "checkbox") { if (await input.getAttribute("required") !== null) await input.check(); continue; }
+    if (type === "date") {
+      // Завтрашний день: подходит и под min = сегодня
+      const d = new Date(Date.now() + 864e5);
+      await input.fill(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+      continue;
+    }
+    if (type === "time") { await input.fill("12:00"); continue; }
+    if (type === "number") { await input.fill((await input.getAttribute("min")) || "1"); continue; }
     const name = (await input.getAttribute("name")) || "";
     const value = type === "tel" || /phone/i.test(name) ? "8 (912) 345-67-80"
       : type === "email" ? "check@mail.ru"
       : (await input.evaluate((el) => el.tagName)) === "TEXTAREA" ? "Проверочная заявка"
       : "Анна";
     await input.fill(value);
+  }
+  // Обязательные списки: первый вариант с непустым значением
+  for (const select of await form.locator("select[required]").all()) {
+    const value = await select.evaluate((el) => [...el.options].find((o) => !o.disabled && o.value)?.value);
+    if (value) await select.selectOption(value);
   }
 }
 
