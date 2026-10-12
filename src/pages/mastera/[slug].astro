@@ -1,0 +1,86 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Photo from "../../components/Photo.astro";
+import WorkStrip from "../../components/WorkStrip.astro";
+import MasterCard from "../../components/MasterCard.astro";
+import { masters, type Master } from "../../data/masters";
+import { groups, levels } from "../../data/services";
+import { url, rub } from "../../lib/url";
+
+export function getStaticPaths() {
+  return masters.map((master) => ({ params: { slug: master.slug }, props: { master } }));
+}
+const { master: m } = Astro.props as { master: Master };
+const levelIndex = levels.findIndex((l) => l.id === m.level);
+const level = levels[levelIndex];
+const years = new Date().getFullYear() - m.since;
+const yearsWord = (n: number) => {
+  const f = new Intl.PluralRules("ru").select(n);
+  return f === "one" ? "год" : f === "few" ? "года" : "лет";
+};
+const myGroups = groups.filter((g) => m.groups.includes(g.slug));
+const others = masters.filter((x) => x.slug !== m.slug).slice(0, 3);
+const price = (s: (typeof groups)[number]["services"][number]) =>
+  s.free ? "бесплатно" : `${s.from ? "от " : ""}${rub(Array.isArray(s.prices) ? s.prices[levelIndex] : s.prices)}`;
+---
+<Base title={`${m.name}, ${level.name.toLowerCase()} — салон «Каре»`} description={`${m.name}: ${m.role.toLowerCase()}. Работы, цены и онлайн-запись к мастеру в салоне «Каре» на Малой Бронной.`}>
+  <PageHead title={m.name} label={level.name} crumbs={[{ href: "/mastera/", label: "Мастера" }, { href: `/mastera/${m.slug}/`, label: m.name }]} lead={m.role} />
+
+  <section class="section">
+    <div class="container profile">
+      <div class="profile__photo"><Photo name={m.photo} alt={m.photoAlt} sizes="(min-width: 62rem) 38vw, 100vw" eager /></div>
+      <div class="profile__text">
+        <p class="profile__quote">«{m.quote}»</p>
+        <dl class="profile__meta">
+          <div><dt>Уровень</dt><dd>{level.name}</dd></div>
+          <div><dt>Стаж</dt><dd>{years} {yearsWord(years)}, с&nbsp;{m.since}</dd></div>
+        </dl>
+        {m.about.map((p) => <p>{p}</p>)}
+        <div>
+          <h2 style="font-size: var(--step-2); margin-bottom: var(--space-s)">Лучше всего получается</h2>
+          <ul class="profile__best">{m.best.map((b) => <li>{b}</li>)}</ul>
+        </div>
+        <p><a class="button" href={url(`/zapis/?master=${m.slug}`)}>Записаться к&nbsp;{m.nameDative}</a></p>
+
+        <div>
+          <h2 style="font-size: var(--step-2); margin-bottom: var(--space-xs)">Цены у&nbsp;{m.nameDative}</h2>
+          <p class="muted" style="margin-bottom: var(--space-s)">Уровень «{level.name.toLowerCase()}». Нажмите на&nbsp;услугу, чтобы записаться.</p>
+          <table class="prices prices--simple">
+            <tbody>
+              {myGroups.flatMap((g) => g.services).map((s) => (
+                <tr>
+                  <th scope="row"><a href={url(`/zapis/?usluga=${s.id}&master=${m.slug}`)} style="color: inherit">{s.name}</a></th>
+                  <td class="time">{s.time}</td>
+                  <td class="num">{price(s)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="works-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Портфолио</p>
+        <h2 id="works-title">Работы</h2>
+        <a class="link-arrow" href={url("/raboty/")}>Все работы салона</a>
+      </div>
+      <WorkStrip keys={m.works} />
+    </div>
+  </section>
+
+  <section class="section deep" aria-labelledby="others-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Ещё мастера</p>
+        <h2 id="others-title">Та же школа</h2>
+        <a class="link-arrow" href={url("/mastera/")}>Все мастера</a>
+      </div>
+      <ul class="masters" style="--n: 3">{others.map((x) => <MasterCard master={x} />)}</ul>
+    </div>
+  </section>
+</Base>

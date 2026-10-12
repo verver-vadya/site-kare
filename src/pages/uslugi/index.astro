@@ -1,0 +1,47 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Photo from "../../components/Photo.astro";
+import PriceTable from "../../components/PriceTable.astro";
+import Levels from "../../components/Levels.astro";
+import Band from "../../components/Band.astro";
+import { groups, groupFrom } from "../../data/services";
+import { url, rub } from "../../lib/url";
+---
+<Base title="Услуги и цены — салон «Каре»" description="Цены на стрижки, окрашивание, укладки и уход в салоне «Каре». Цена зависит от уровня мастера: стилист, ведущий стилист, арт-директор.">
+  <PageHead title="Услуги и&nbsp;цены" label="Прайс" crumbs={[{ href: "/uslugi/", label: "Услуги и цены" }]}
+    lead="Цена зависит от&nbsp;уровня мастера, а&nbsp;не&nbsp;от&nbsp;дня недели. «От» значит, что сумма зависит от&nbsp;длины и&nbsp;густоты: мастер назовёт её до&nbsp;начала работы." />
+
+  <section class="section" aria-label="Группы услуг">
+    <div class="container">
+      <ul class="groups" style="list-style: none; padding: 0">
+        {groups.map((g) => (
+          <li>
+            <a class="group-card" href={url(`/uslugi/${g.slug}/`)}>
+              <div class="group-card__photo"><Photo name={g.photo} alt={g.photoAlt} sizes="(min-width: 75rem) 22vw, (min-width: 48rem) 45vw, 100vw" /></div>
+              <h2>{g.name}</h2>
+              <p>{g.short}</p>
+              <p class="from">от {rub(groupFrom(g))}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="price-title">
+    <div class="container">
+      <div class="head">
+        <p class="label">Цены</p>
+        <h2 id="price-title">Три уровня мастеров</h2>
+        <p>Все мастера стригут по&nbsp;одной технике. Ведущие стилисты и&nbsp;арт-директор работают дольше и&nbsp;берутся за&nbsp;сложные случаи: исправить чужую стрижку, выйти из&nbsp;тёмного цвета.</p>
+      </div>
+      <Levels />
+      <div style="display: grid; gap: var(--space-xl)">
+        {groups.map((g) => <PriceTable group={g} heading="h3" link />)}
+      </div>
+    </div>
+  </section>
+
+  <Band />
+</Base>

@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { url } from "../lib/url";
+---
+<Base title="Страница не найдена — салон «Каре»" description="Такой страницы на сайте салона «Каре» нет." noindex>
+  <section class="notfound">
+    <div class="container">
+      <p class="label">Ошибка 404</p>
+      <h1>Такой страницы нет</h1>
+      <p>Возможно, ссылка устарела или в&nbsp;адресе опечатка. Начните с&nbsp;главной или сразу запишитесь.</p>
+      <p style="display: flex; flex-wrap: wrap; gap: var(--space-s)">
+        <a class="button" href={url("/")}>На главную</a>
+        <a class="button button--ghost" href={url("/zapis/")}>Записаться</a>
+      </p>
+    </div>
+  </section>
+</Base>

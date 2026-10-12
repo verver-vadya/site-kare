@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import MasterCard from "../../components/MasterCard.astro";
+import Levels from "../../components/Levels.astro";
+import Band from "../../components/Band.astro";
+import { masters } from "../../data/masters";
+import { groups } from "../../data/services";
+import { url } from "../../lib/url";
+---
+<Base title="Мастера — салон «Каре»" description="Мастера салона «Каре»: арт-директор, ведущие стилисты и стилисты. Портфолио, специализация и запись к каждому мастеру.">
+  <PageHead title="Мастера" label="Команда" crumbs={[{ href: "/mastera/", label: "Мастера" }]}
+    lead="Все учились у&nbsp;основательницы салона и&nbsp;стригут по&nbsp;одной технике. Выберите мастера по&nbsp;услуге или по&nbsp;работам." />
+
+  <section class="section" aria-label="Список мастеров">
+    <div class="container">
+      <div class="filter" role="group" aria-label="Показать мастеров по услуге" data-filter="masters">
+        <button type="button" aria-pressed="true" data-value="">Все</button>
+        {groups.map((g) => <button type="button" aria-pressed="false" data-value={g.slug}>{g.name}</button>)}
+      </div>
+      <ul class="masters" id="masters" style="--n: 5" data-filter-list>
+        {masters.map((m) => <MasterCard master={m} heading="h2" />)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="levels-title">
+    <div class="container">
+      <div class="head">
+        <p class="label">Уровни</p>
+        <h2 id="levels-title">Чем отличаются уровни</h2>
+        <p>Уровень мастера зависит от&nbsp;опыта и&nbsp;того, с&nbsp;какими задачами он&nbsp;справляется. Цены каждого уровня — в&nbsp;разделе <a href={url("/uslugi/")}>услуги и&nbsp;цены</a>.</p>
+      </div>
+      <Levels />
+    </div>
+  </section>
+
+  <Band />
+</Base>

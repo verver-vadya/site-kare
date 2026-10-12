@@ -1,0 +1,39 @@
+---
+import { site, nav } from "../data/site";
+import { url } from "../lib/url";
+import Wordmark from "./Wordmark.astro";
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Wordmark neon title="Каре" />
+        <p>{site.tagline} на Малой Бронной с {site.since} года.</p>
+      </div>
+      <div>
+        <h2>Салон</h2>
+        <p>{site.addressFull}</p>
+        <p>{site.hours}</p>
+        <p><a href={site.phoneHref}>{site.phone.replace(/ /g, " ")}</a></p>
+        <p><a href={`https://t.me/${site.telegram}`} target="_blank" rel="noopener">Telegram @{site.telegram}</a></p>
+      </div>
+      <div>
+        <h2>Разделы</h2>
+        <ul>{nav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <h2>Ещё</h2>
+        <ul>
+          <li><a href={url("/zapis/")}>Онлайн-запись</a></li>
+          <li><a href={url("/sertifikaty/")}>Подарочные сертификаты</a></li>
+          <li><a href={url("/privacy/")}>Политика конфиденциальности</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p>&copy; <span data-year>{year}</span> Салон «{site.name}»</p>
+      <p>Концепт сайта: салон вымышленный, фото с фотостока</p>
+    </div>
+  </div>
+</footer>

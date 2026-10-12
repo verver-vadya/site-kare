@@ -1,0 +1,16 @@
+---
+// Несколько работ в ряд с подписью и мастером
+import Photo from "./Photo.astro";
+import { workByKey } from "../data/works";
+import { masterBySlug } from "../data/masters";
+interface Props { keys: string[] }
+const list = Astro.props.keys.map((k) => workByKey(k)!).filter(Boolean);
+---
+<div class:list={["strip", { "strip--3": list.length === 3 }]}>
+  {list.map((w) => (
+    <figure>
+      <Photo name={w.key} alt={w.alt} sizes="(min-width: 62rem) 22vw, 45vw" />
+      <figcaption><b>{w.title}</b>{masterBySlug(w.master)?.name}</figcaption>
+    </figure>
+  ))}
+</div>

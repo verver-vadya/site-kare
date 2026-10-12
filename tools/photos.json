@@ -1,0 +1,692 @@
+[
+ {
+  "key": "hero-l",
+  "src": "couch-by-interior-brick-wall",
+  "mode": "none",
+  "widths": [
+   1280,
+   1920,
+   2560,
+   3840
+  ],
+  "q": 74
+ },
+ {
+  "key": "hero-p",
+  "src": "couch-by-interior-brick-wall",
+  "px": [
+   1880,
+   0,
+   3880,
+   2667
+  ],
+  "mode": "none",
+  "widths": [
+   600,
+   900,
+   1200,
+   1600
+  ],
+  "q": 74
+ },
+ {
+  "key": "int-sinks",
+  "src": "hair-salon-sinks-on-red-brick",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 0.4,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "int-place",
+  "src": "hair-salon-mail-hair-stylist",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 0.6,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "int-shelf",
+  "src": "interior-decor-shelving-with-ceramic-art",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 0.4,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "int-chairs",
+  "src": "pair-of-green-and-white-chairs-in-barbershop",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 0.6,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "int-court",
+  "src": "cafe-chairs-and-brick-wall",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 0.8,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "int-towel",
+  "src": "white-towels-and-rob-in-salon",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.62,
+   0.5
+  ]
+ },
+ {
+  "key": "int-clock",
+  "src": "clock-and-flowers-on-side-table",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-parting",
+  "src": "close-up-stylist-parting-hair",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-combing",
+  "src": "combing-hair-at-salon",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-blow",
+  "src": "salon-blow-drying-hair",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-blow2",
+  "src": "hands-blow-drying-hair",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-cut",
+  "src": "woman-getting-hair-cut-at-salon",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-cut2",
+  "src": "woman-stylist-cuts-hair-at-salon",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-wash",
+  "src": "wash-and-trim",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-wet",
+  "src": "stylist-combs-wet-hair",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-tools",
+  "src": "hair-scissors-and-tools",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-combs",
+  "src": "repeat-pattern-of-combs-laying-on-a-beige-surface",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-swatch",
+  "src": "color-swatches",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "p-first",
+  "src": "the-first-cut",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "g-strizhki",
+  "src": "woman-getting-hair-cut-at-salon",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.52,
+   0.5
+  ]
+ },
+ {
+  "key": "g-okrashivanie",
+  "src": "brunette-woman-in-salon-chair",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.38,
+   0.5
+  ]
+ },
+ {
+  "key": "g-ukladki",
+  "src": "salon-blow-drying-hair",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "g-uhod",
+  "src": "hair-in-messy-bun",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "m-anna",
+  "src": "monochrome-portrait-of-a-woman-holding-hand-to-her-chin",
+  "mode": "duo",
+  "widths": [
+   480,
+   960
+  ],
+  "k": 1,
+  "ratio": 0.75,
+  "focus": [
+   0.5,
+   0.42
+  ]
+ },
+ {
+  "key": "m-mark",
+  "src": "profile-of-a-man-with-beard-and-styled-hair",
+  "mode": "duo",
+  "widths": [
+   480,
+   960
+  ],
+  "k": 1,
+  "ratio": 0.75,
+  "focus": [
+   0.5,
+   0.4
+  ]
+ },
+ {
+  "key": "m-mariam",
+  "src": "portrait-of-a-woman-in-a-white-shirt",
+  "mode": "duo",
+  "widths": [
+   480,
+   960
+  ],
+  "k": 1,
+  "ratio": 0.75,
+  "focus": [
+   0.55,
+   0.42
+  ]
+ },
+ {
+  "key": "m-timur",
+  "src": "portrait-of-a-person-leaning-in-chair",
+  "mode": "duo",
+  "widths": [
+   480,
+   960
+  ],
+  "k": 1,
+  "ratio": 0.75,
+  "focus": [
+   0.5,
+   0.4
+  ]
+ },
+ {
+  "key": "m-vera",
+  "src": "portrait-of-a-woman-with-long-brown-hair-and-crossed-arms",
+  "mode": "duo",
+  "widths": [
+   480,
+   960
+  ],
+  "k": 1,
+  "ratio": 0.75,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-camera",
+  "src": "woman-with-short-dark-hair-takes-a-photo",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.47,
+   0.5
+  ]
+ },
+ {
+  "key": "w-profile",
+  "src": "black-and-white-photo-of-a-woman-profile",
+  "mode": "duo",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.36,
+   0.5
+  ]
+ },
+ {
+  "key": "w-fringe",
+  "src": "women-looks-down-in-concentration",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-redwall",
+  "src": "woman-sandwiched-between-a-red-wall-and-a-curtain-of-white-chains",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-honey",
+  "src": "brunette-woman-in-salon-chair",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-blond",
+  "src": "long-blond-hair",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-pink",
+  "src": "woman-portrait-on-pink-brick",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.55,
+   0.4
+  ]
+ },
+ {
+  "key": "w-balayage",
+  "src": "twirling-hair-and-batting-eyes",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.38
+  ]
+ },
+ {
+  "key": "w-red",
+  "src": "woman-with-red-hair-half-hides-behind-red-flowers",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-waves",
+  "src": "smiling-brunette-woman",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-curls",
+  "src": "woman-looks-down",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-leaf",
+  "src": "monochrome-person-with-a-leaf-silhouette-on-their-face",
+  "mode": "duo",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.45
+  ]
+ },
+ {
+  "key": "w-evening",
+  "src": "person-with-brown-hair-in-a-white-silk-robe",
+  "mode": "warm",
+  "widths": [
+   600,
+   1200
+  ],
+  "k": 1,
+  "ratio": 0.8,
+  "focus": [
+   0.5,
+   0.33
+  ]
+ },
+ {
+  "key": "w-candle",
+  "src": "woman-on-bed-in-candle-light",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-window",
+  "src": "woman-poses-by-large-window",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ },
+ {
+  "key": "w-soft",
+  "src": "soft-gaze",
+  "mode": "warm",
+  "widths": [
+   800,
+   1600
+  ],
+  "k": 1,
+  "ratio": 1.5,
+  "focus": [
+   0.5,
+   0.5
+  ]
+ }
+]

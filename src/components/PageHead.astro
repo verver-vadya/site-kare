@@ -1,0 +1,22 @@
+---
+// Заголовок внутренней страницы: хлебные крошки, рубрика, h1 и короткий лид
+import { url } from "../lib/url";
+interface Props { title: string; label?: string; lead?: string; crumbs?: { href: string; label: string }[] }
+const { title, label, lead, crumbs = [] } = Astro.props;
+---
+<header class="page-head">
+  <div class="container page-head__grid">
+    <div>
+      <nav aria-label="Вы здесь">
+        <ol class="crumbs">
+          <li><a href={url("/")}>Главная</a></li>
+          {crumbs.map((c) => <li><a href={url(c.href)}>{c.label}</a></li>)}
+        </ol>
+      </nav>
+      {label && <p class="label" style="margin-top: var(--space-m)">{label}</p>}
+      <h1 set:html={title} />
+    </div>
+    {lead && <p class="page-head__lead" set:html={lead} />}
+    <slot />
+  </div>
+</header>

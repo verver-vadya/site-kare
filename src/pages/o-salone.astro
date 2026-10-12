@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Photo from "../components/Photo.astro";
+import Band from "../components/Band.astro";
+import { site } from "../data/site";
+import { masterBySlug } from "../data/masters";
+import { url } from "../lib/url";
+const anna = masterBySlug("anna-vetrova")!;
+---
+<Base title="О салоне — «Каре» на Малой Бронной" description={`История салона «Каре», зал со двора на Малой Бронной, косметика, с которой работаем, и правила салона.`}>
+  <PageHead title="О&nbsp;салоне" label={`С ${site.since} года`} crumbs={[{ href: "/o-salone/", label: "О салоне" }]}
+    lead="Небольшой салон во&nbsp;дворе на&nbsp;Малой Бронной: пять кресел, кирпичная стена, растения и&nbsp;диван, на&nbsp;котором ждут, пока проявится цвет." />
+
+  <section class="section" aria-label="Зал салона">
+    <div class="container gallery">
+      <figure><Photo name="hero-l" alt="Кирпичная стена с полкой растений и диван с белыми подушками" sizes="(min-width: 62rem) 62vw, 100vw" eager /><figcaption>Зона ожидания: здесь пьют кофе, пока сохнет краска</figcaption></figure>
+      <figure><Photo name="int-sinks" alt="Две раковины для мытья головы у кирпичной стены" sizes="(min-width: 62rem) 30vw, 50vw" /><figcaption>Мойка с массажными креслами</figcaption></figure>
+      <figure><Photo name="int-place" alt="Мастер за работой у зеркала с лампами" sizes="(min-width: 62rem) 30vw, 50vw" /><figcaption>Зеркала с дневным светом: цвет видно честно</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="story-title">
+    <div class="container split">
+      <div class="split__media"><Photo name={anna.photo} alt={anna.photoAlt} sizes="(min-width: 62rem) 40vw, 100vw" /></div>
+      <div class="split__text">
+        <p class="label">История</p>
+        <h2 id="story-title">Один мастер, одна техника, пять кресел</h2>
+        <p class="lead">«Каре» открыла Анна Ветрова в&nbsp;{site.since} году: одно кресло в&nbsp;бывшей мастерской во&nbsp;дворе и&nbsp;клиенты, которые шли за&nbsp;ней из&nbsp;прошлого салона.</p>
+        <p class="muted">Через три года кресел стало пять. Анна сама учит каждого мастера своей технике каре, поэтому в&nbsp;салоне можно прийти к&nbsp;любому мастеру и&nbsp;получить одну и&nbsp;ту&nbsp;же форму.</p>
+        <p><a class="link-arrow" href={url(`/mastera/${anna.slug}/`)}>Об&nbsp;Анне</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section deep" aria-labelledby="care-title">
+    <div class="container split split--flip">
+      <div class="split__media"><Photo name="int-shelf" alt="Деревянный стеллаж с керамическими вазами и банками" sizes="(min-width: 62rem) 40vw, 100vw" /></div>
+      <div class="split__text">
+        <p class="label">Косметика</p>
+        <h2 id="care-title">Чем мы&nbsp;работаем</h2>
+        <p class="lead">Профессиональные красители без аммиака и&nbsp;уход тех&nbsp;же марок, что продаём для&nbsp;дома.</p>
+        <p>Если у&nbsp;вас аллергия или чувствительная кожа головы, скажите при записи: подберём средства и&nbsp;сделаем тест за&nbsp;48&nbsp;часов до&nbsp;окрашивания.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rules-title">
+    <div class="container">
+      <div class="head"><p class="label">Правила</p><h2 id="rules-title">Как у&nbsp;нас принято</h2></div>
+      <ul class="rules">
+        <li><b>Опоздание</b><span>Ждём 15&nbsp;минут. Если опаздываете больше, позвоните: перенесём или сократим услугу, чтобы не&nbsp;задерживать следующего клиента.</span></li>
+        <li><b>Отмена и&nbsp;перенос</b><span>Бесплатно, если предупредить за&nbsp;сутки. Без штрафов и&nbsp;предоплаты.</span></li>
+        <li><b>Цена</b><span>Мастер называет её до&nbsp;начала работы. Если в&nbsp;процессе понадобится больше красителя, сначала спросим.</span></li>
+        <li><b>Дети и&nbsp;животные</b><span>Стрижём с&nbsp;12&nbsp;лет. С&nbsp;собаками на&nbsp;руках можно, кофе для&nbsp;них нет.</span></li>
+        <li><b>Оплата</b><span>Картой, наличными или по&nbsp;QR-коду СБП. Есть <a href={url("/sertifikaty/")}>подарочные сертификаты</a>.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <Band title="Приходите посмотреть" text="Без записи можно зайти на&nbsp;кофе и&nbsp;посмотреть салон. Записаться можно онлайн или по&nbsp;телефону." href="/kontakty/" button="Как добраться" />
+</Base>

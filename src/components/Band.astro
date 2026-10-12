@@ -1,0 +1,20 @@
+---
+// Терракотовая полоса с призывом записаться
+import { url } from "../lib/url";
+interface Props { title?: string; text?: string; href?: string; button?: string }
+const {
+  title = "Не знаете, что выбрать?",
+  text = "Приходите на бесплатную консультацию: мастер посмотрит волосы и предложит стрижку или цвет. Двадцать минут, ни к чему не обязывает.",
+  href = "/zapis/?usluga=consult",
+  button = "Записаться на консультацию",
+} = Astro.props;
+---
+<section class="band" aria-label="Запись">
+  <div class="container band__inner">
+    <div>
+      <h2 set:html={title} />
+      <p style="margin-top: var(--space-s)" set:html={text} />
+    </div>
+    <a class="button button--light" href={url(href)}>{button}</a>
+  </div>
+</section>
