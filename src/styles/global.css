@@ -590,3 +590,8 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 @media (hover: hover) { .prices--simple tbody th a:hover { text-decoration: underline; } }
 
 .booking__form { gap: var(--space-l); }
+
+/* Без анимаций: фото при наведении не приближаются, остаётся смена цвета */
+@media (prefers-reduced-motion: reduce) {
+  .tile > img, .group-card__photo img, .master-card__photo img { transition: none; transform: none !important; }
+}
