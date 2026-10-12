@@ -416,7 +416,7 @@ async function checkHoverOverlap(page, pathname, label) {
     }
     let n = 0;
     for (const sel of out) {
-      for (const el of document.querySelectorAll(sel)) if (n < 12 && el.getBoundingClientRect().width) el.dataset.checkHover = String(n++);
+      for (const el of document.querySelectorAll(sel)) if (n < 12 && !el.dataset.checkHover && el.getBoundingClientRect().width) el.dataset.checkHover = String(n++); // элемент мог подойти под два селектора
     }
     return n;
   });

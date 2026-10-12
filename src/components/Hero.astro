@@ -3,6 +3,8 @@
 // Вывеска — SVG в координатах фото (viewBox = размер кадра), а preserveAspectRatio повторяет
 // object-fit/object-position у фото, поэтому вывеска всегда висит на одном и том же месте стены.
 // Для вертикальных экранов свой кадр (правая часть того же фото) и своя вывеска.
+// Слои вывески: тёмная стеклянная трубка с тенью на стене, отсвет на кирпиче и сам свет.
+// Свет и отсвет загораются после загрузки фото: несколько раз мигают и плавно разгораются (main.js, global.css).
 import { wordmark } from "../data/wordmark";
 import { images } from "../data/images";
 import { url } from "../lib/url";
@@ -10,13 +12,20 @@ import { url } from "../lib/url";
 const L = images["hero-l"], P = images["hero-p"];
 // Место вывески в долях исходного кадра 4000×2667: левый верхний угол и ширина
 const at = { x: 0.585, y: 0.3, w: 0.29 };
-const place = (W: number, H: number, dx = 0, k = 1) => {
+const place = (dx: number, k: number) => {
   const s = (at.w * 4000 * k) / wordmark.w;
   const x = (at.x * 4000 - dx) * k - wordmark.x * s;
   const y = at.y * 2667 * k - wordmark.y * s;
-  return `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)})`;
+  // Центр и размер вывески в координатах кадра — для отсвета на стене
+  const w = wordmark.w * s, h = wordmark.h * s;
+  const cx = (at.x * 4000 - dx) * k + w / 2, cy = at.y * 2667 * k + h / 2;
+  return { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)})`, cx, cy, w, h };
 };
 const kL = L.w / 4000, kP = P.w / 2000; // hero-p вырезан из x = 1880…3880
+const signs = [
+  { id: "l", W: L.w, H: L.h, ratio: "xMaxYMid slice", ...place(0, kL) },
+  { id: "p", W: P.w, H: P.h, ratio: "xMidYMid slice", ...place(1880, kP) },
+];
 const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets/img/${key}-${w}.webp`)} ${w}w`).join(", ");
 ---
 <div class="hero__stage">
@@ -25,10 +34,23 @@ const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets
     <img src={url("/assets/img/hero-l-1920.webp")} srcset={set("hero-l", L.widths)} sizes="(min-aspect-ratio: 3/2) 100vw, 150svh"
       width={L.w} height={L.h} alt="Зал салона: кирпичная стена, полка с растениями, диван с белыми подушками и неоновая вывеска «Каре»" fetchpriority="high">
   </picture>
-  <svg class="hero__neon hero__neon--l neon neon--on" viewBox={`0 0 ${L.w} ${L.h}`} preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
-    <g transform={place(L.w, L.h, 0, kL)}><path d={wordmark.d} /></g>
-  </svg>
-  <svg class="hero__neon hero__neon--p neon neon--on" viewBox={`0 0 ${P.w} ${P.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-    <g transform={place(P.w, P.h, 1880, kP)}><path d={wordmark.d} /></g>
-  </svg>
+  {signs.map((g) => (
+    <svg class={`hero__neon hero__neon--${g.id}`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id={`spill-${g.id}`}>
+          <stop offset="0" stop-color="#ff7a4d" stop-opacity="0.34" />
+          <stop offset="0.55" stop-color="#ff6a3a" stop-opacity="0.12" />
+          <stop offset="1" stop-color="#ff6a3a" stop-opacity="0" />
+        </radialGradient>
+        <filter id={`tube-shadow-${g.id}`} x="-10%" y="-10%" width="130%" height="140%">
+          <feDropShadow dx="14" dy="22" stdDeviation="10" flood-color="#120804" flood-opacity="0.55" />
+        </filter>
+      </defs>
+      <ellipse class="neon-spill" cx={g.cx.toFixed(1)} cy={g.cy.toFixed(1)} rx={(g.w * 0.9).toFixed(1)} ry={(g.h * 1.05).toFixed(1)} fill={`url(#spill-${g.id})`} />
+      <g transform={g.transform} filter={`url(#tube-shadow-${g.id})`}><path class="neon-tube" d={wordmark.d} /></g>
+    </svg>
+    <svg class={`hero__neon hero__neon--${g.id} neon neon-light`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+      <g transform={g.transform}><path d={wordmark.d} /></g>
+    </svg>
+  ))}
 </div>

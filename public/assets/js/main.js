@@ -36,6 +36,18 @@ if (toggle && nav) {
   });
 }
 
+// Неоновая вывеска на главной загорается, когда фото зала уже на экране (анимация в global.css)
+const heroStage = document.querySelector(".hero__stage");
+if (heroStage) {
+  const heroImg = heroStage.querySelector("img");
+  const light = () => heroStage.classList.add("is-ready");
+  if (!heroImg || (heroImg.complete && heroImg.naturalWidth)) light();
+  else {
+    heroImg.addEventListener("load", light, { once: true });
+    heroImg.addEventListener("error", light, { once: true });
+  }
+}
+
 // Текущий год в подвале (в HTML тоже вписан год на случай, если скрипт не загрузится)
 document.querySelectorAll("[data-year]").forEach((el) => {
   el.textContent = new Date().getFullYear();
