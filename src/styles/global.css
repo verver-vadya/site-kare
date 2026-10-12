@@ -202,6 +202,9 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .hero__stage { position: relative; overflow: hidden; height: clamp(24rem, 78svh, 46rem); }
 .hero__stage img, .hero__stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero__stage img { object-fit: cover; object-position: 50% 50%; }
+/* Свет вывески складывается с фото (screen), тёплый свет комнаты окрашивает его (overlay) */
+.hero__light { mix-blend-mode: screen; }
+.hero__room { mix-blend-mode: overlay; }
 .hero__neon--l { display: none; }
 /* Кадр и вывеска меняются вместе с <source media> у фото: вертикальный экран — вертикальный кадр */
 @media (min-aspect-ratio: 1001/1000) {

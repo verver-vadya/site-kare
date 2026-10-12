@@ -3,28 +3,29 @@
 // Вывеска — SVG в координатах фото (viewBox = размер кадра), а preserveAspectRatio повторяет
 // object-fit/object-position у фото, поэтому вывеска всегда висит на одном и том же месте стены.
 // Для вертикальных экранов свой кадр (правая часть того же фото) и своя вывеска.
-// Вывеска как настоящая: стеклянные трубки по осевой линии букв (src/data/neon.ts), чёрные концы у электродов,
-// держатели и провода до спинки дивана. Выключенная трубка — тёмное стекло с бликами (SVG-фильтр с освещением),
-// поверх неё свет и отсвет на кирпиче. Свет загорается после загрузки фото: мигает и разгорается (main.js, global.css).
-import { wordmark } from "../data/wordmark";
-import { neon } from "../data/neon";
+// Вывеска взята с картинки-образца (tools/neon/sign-ref.jpg, скрипт tools/neon/photo.py): выключенные стеклянные
+// трубки с держателями и тенью (neon-glass.webp), свет горящих трубок и свечение на стене (neon-light.webp, режим screen)
+// и тёплый свет на всю комнату (режим overlay). Провода нарисованы линиями. Свет загорается после загрузки фото:
+// мигает и разгорается (main.js, global.css).
+import { neonPhoto } from "../data/neon-photo";
 import { images } from "../data/images";
 import { url } from "../lib/url";
 
 const L = images["hero-l"], P = images["hero-p"];
-// Место вывески в долях исходного кадра 4000×2667: левый верхний угол и ширина
-const at = { x: 0.585, y: 0.3, w: 0.29 };
-const place = (dx: number, k: number) => {
-  const s = (at.w * 4000 * k) / wordmark.w;
-  const x = (at.x * 4000 - dx) * k - wordmark.x * s;
-  const y = at.y * 2667 * k - wordmark.y * s;
-  return { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)})` };
-};
+// Образец ложится на исходный кадр 4000×2667 так: X = 2.729·x + 1957.3, Y = 2.729·y + 417.7
+const s0 = 2.62 / 0.96, ox = 1879 / 0.96, oy = 401 / 0.96;
+// Середина вывески в исходном кадре: от неё расходится тёплый свет по комнате
+const glow = { x: 330 * s0 + ox, y: 300 * s0 + oy, r: 1900 };
+const place = (dx: number, k: number) => ({
+  transform: `matrix(${(s0 * k).toFixed(4)} 0 0 ${(s0 * k).toFixed(4)} ${((ox - dx) * k).toFixed(1)} ${(oy * k).toFixed(1)})`,
+  glow: { cx: ((glow.x - dx) * k).toFixed(0), cy: (glow.y * k).toFixed(0), r: (glow.r * k).toFixed(0) },
+});
 const kL = L.w / 4000, kP = P.w / 2000; // hero-p вырезан из x = 1880…3880
 const signs = [
   { id: "l", W: L.w, H: L.h, ratio: "xMaxYMid slice", ...place(0, kL) },
   { id: "p", W: P.w, H: P.h, ratio: "xMidYMid slice", ...place(1880, kP) },
 ];
+const c = neonPhoto.canvas;
 const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets/img/${key}-${w}.webp`)} ${w}w`).join(", ");
 ---
 <div class="hero__stage">
@@ -34,48 +35,26 @@ const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets
       width={L.w} height={L.h} alt="Зал салона: кирпичная стена, полка с растениями, диван с белыми подушками и неоновая вывеска «Каре»" fetchpriority="high">
   </picture>
   {signs.map((g) => (
-    <svg class={`hero__neon hero__neon--${g.id}`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
-      <defs>
-        <filter id={`shadow-${g.id}`} x="-20%" y="-20%" width="140%" height="160%">
-          <feDropShadow dx="16" dy="26" stdDeviation="9" flood-color="#160a05" flood-opacity="0.55" />
-        </filter>
-        <filter id={`glass-${g.id}`} x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="bump" />
-          <feSpecularLighting in="bump" surfaceScale="10" specularConstant="0.9" specularExponent="48" lighting-color="#f6e4d8" result="spec">
-            <feDistantLight azimuth="225" elevation="48" />
-          </feSpecularLighting>
-          <feComposite in="spec" in2="SourceAlpha" operator="in" result="shine" />
-          <feComposite in="SourceGraphic" in2="shine" operator="arithmetic" k2="1" k3="0.75" />
-        </filter>
-        <filter id={`halo-${g.id}`} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="34" /></filter>
-        <filter id={`bloom-${g.id}`} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9" /></filter>
-        <radialGradient id={`spill-${g.id}`}>
-          <stop offset="0" stop-color="#ffb07a" stop-opacity="0.32" />
-          <stop offset="0.55" stop-color="#ff9a5c" stop-opacity="0.1" />
-          <stop offset="1" stop-color="#ff9a5c" stop-opacity="0" />
+    <>
+      <svg class={`hero__neon hero__neon--${g.id} hero__room neon-spill`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <radialGradient id={`room-${g.id}`} gradientUnits="userSpaceOnUse" cx={g.glow.cx} cy={g.glow.cy} r={g.glow.r}>
+          <stop offset="0" stop-color="#ff800d" stop-opacity="0.6" />
+          <stop offset="0.25" stop-color="#ff800d" stop-opacity="0.54" />
+          <stop offset="0.5" stop-color="#ff800d" stop-opacity="0.4" />
+          <stop offset="0.75" stop-color="#ff800d" stop-opacity="0.31" />
+          <stop offset="1" stop-color="#ff800d" stop-opacity="0.28" />
         </radialGradient>
-      </defs>
-      <g transform={g.transform} fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <ellipse class="neon-spill" cx={wordmark.x + wordmark.w / 2} cy={wordmark.y + wordmark.h / 2} rx={wordmark.w * 0.66} ry={wordmark.h * 0.62} fill={`url(#spill-${g.id})`} />
-        <g filter={`url(#shadow-${g.id})`} stroke="#151012" stroke-width="9">{neon.wires.map((d) => <path d={d} />)}</g>
-        <g stroke="#fff" stroke-opacity="0.13" stroke-width="2.5" transform="translate(-2.5 -3)">{neon.wires.map((d) => <path d={d} />)}</g>
-        <g filter={`url(#shadow-${g.id})`}>
-          <g filter={`url(#glass-${g.id})`}>
-            <g stroke="#110b0e" stroke-opacity="0.92" stroke-width="40">{neon.tubes.map((d) => <path d={d} />)}</g>
-            <g stroke="#30233a" stroke-opacity="0.8" stroke-width="32">{neon.tubes.map((d) => <path d={d} />)}</g>
-          </g>
+        <rect width={g.W} height={g.H} fill={`url(#room-${g.id})`} />
+      </svg>
+      <svg class={`hero__neon hero__neon--${g.id}`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <g transform={g.transform}>
+          <g fill="none" stroke="#141011" stroke-width="1.1" stroke-linecap="round">{neonPhoto.wires.map((d) => <path d={d} />)}</g>
+          <image href={url("/assets/img/neon-glass.webp")} x={c.x} y={c.y} width={c.w} height={c.h} preserveAspectRatio="none" />
         </g>
-        <g class="neon-light">
-          <g filter={`url(#halo-${g.id})`} stroke="#ff9d62" stroke-opacity="0.55" stroke-width="110">{neon.tubes.map((d) => <path d={d} />)}</g>
-          <g filter={`url(#bloom-${g.id})`} stroke="#ffd2a6" stroke-opacity="0.9" stroke-width="58">{neon.tubes.map((d) => <path d={d} />)}</g>
-          <g stroke="#fff3e3" stroke-width="40">{neon.tubes.map((d) => <path d={d} />)}</g>
-          <g stroke="#fff" stroke-width="20">{neon.tubes.map((d) => <path d={d} />)}</g>
-        </g>
-        <g filter={`url(#glass-${g.id})`} stroke="#0e0a0b" stroke-width="44">{neon.blocks.map((d) => <path d={d} />)}</g>
-        <g filter={`url(#shadow-${g.id})`} stroke="none">
-          {neon.boots.map(([x, y]) => <><circle cx={x} cy={y} r="27" fill="#0d0a0b" /><circle cx={x - 8} cy={y - 10} r="7" fill="#fff" fill-opacity="0.18" /></>)}
-        </g>
-      </g>
-    </svg>
+      </svg>
+      <svg class={`hero__neon hero__neon--${g.id} hero__light neon-light`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <image transform={g.transform} href={url("/assets/img/neon-light.webp")} x={c.x} y={c.y} width={c.w} height={c.h} preserveAspectRatio="none" />
+      </svg>
+    </>
   ))}
 </div>
