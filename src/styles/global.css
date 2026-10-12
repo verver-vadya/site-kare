@@ -177,10 +177,24 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 /* ---------- Неоновая вывеска ---------- */
 .neon path { fill: #fff4ea; }
 .neon { filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 6px var(--color-neon)) drop-shadow(0 0 18px #ff5f2e) drop-shadow(0 0 42px rgb(255 90 40 / 0.65)); }
-/* Вывеска «включается» один раз при загрузке: мягко, без мигания */
-@media (prefers-reduced-motion: no-preference) {
-  .neon--on { animation: neon-on 900ms var(--ease-soft) 250ms both; }
-  @keyframes neon-on { from { opacity: 0.15; } to { opacity: 1; } }
+/* Розжиг как у настоящего неона: после загрузки фото три коротких вспышки, пауза и плавное разгорание.
+   Не больше трёх вспышек в секунду. Без JS и в режиме без анимаций вывеска просто горит. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .neon-light, .neon-spill { opacity: 0; }
+  .hero__stage.is-ready .neon-light, .hero__stage.is-ready .neon-spill { animation: neon-start 2800ms linear 400ms both; }
+}
+@keyframes neon-start {
+  0%, 12% { opacity: 0; }
+  12.5%, 15% { opacity: 0.75; }
+  15.5%, 30% { opacity: 0.08; }
+  30.5%, 32% { opacity: 0.55; }
+  32.5%, 34% { opacity: 0.1; }
+  34.5%, 38% { opacity: 0.85; }
+  38.5%, 52% { opacity: 0.15; }
+  64% { opacity: 0.4; }
+  78% { opacity: 0.68; }
+  90% { opacity: 0.9; }
+  100% { opacity: 1; }
 }
 
 /* ---------- Первый экран главной ---------- */
@@ -188,6 +202,9 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .hero__stage { position: relative; overflow: hidden; height: clamp(24rem, 78svh, 46rem); }
 .hero__stage img, .hero__stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero__stage img { object-fit: cover; object-position: 50% 50%; }
+/* Свет вывески складывается с фото (screen), тёплый свет комнаты окрашивает его (overlay) */
+.hero__light { mix-blend-mode: screen; }
+.hero__room { mix-blend-mode: overlay; }
 .hero__neon--l { display: none; }
 /* Кадр и вывеска меняются вместе с <source media> у фото: вертикальный экран — вертикальный кадр */
 @media (min-aspect-ratio: 1001/1000) {
@@ -233,13 +250,42 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .tile__body { align-self: end; padding: var(--space-l) var(--space-m) var(--space-m); }
 .tile h3 { font-size: var(--step-3); }
 .tile p { max-width: 36ch; margin-top: var(--space-xs); color: #f0e4d6; }
-.tile .link-arrow { margin-top: var(--space-xs); }
+/* Кнопка-пилюля внизу плитки: видно, что плитка нажимается; при наведении на плитку заливается */
+.tile .link-arrow {
+  margin-top: var(--space-s); padding: 0.55rem 1.15rem; border: 1px solid rgb(255 244 234 / 0.6); border-radius: var(--radius-pill);
+  text-decoration: none; transition: background-color var(--duration), color var(--duration), border-color var(--duration);
+}
 @media (hover: hover) {
   .tile:hover > img { transform: scale(1.035); }
+  .tile:hover .link-arrow { background: var(--color-bg); color: var(--color-text); border-color: var(--color-bg); }
   .tile:hover .link-arrow::after { transform: translateX(0.25em); }
 }
+.tile:active .link-arrow { background: var(--color-bg); color: var(--color-text); border-color: var(--color-bg); }
 .tile:active > img { transform: scale(1.02); }
 .tile--deep { background: var(--color-deep); }
+/* Плитка «Мастера»: фото мастеров как разложенные карточки; при наведении они расходятся веером */
+.tile--crew { grid-template-rows: 1fr auto; }
+.tile--crew .link-arrow { background: var(--color-bg); color: var(--color-text); border-color: var(--color-bg); }
+.crew { display: flex; justify-content: center; align-items: center; padding: var(--space-l) var(--space-m) 0; }
+.crew__item {
+  --r: 0deg; --x: 0rem; --y: 0rem;
+  display: grid; gap: 0.3rem; width: clamp(4.25rem, 18%, 8.5rem); margin-inline: -0.15rem;
+  padding: 0.3rem 0.3rem 0.4rem; background: var(--color-bg); color: var(--color-text);
+  font-size: 0.75rem; font-weight: 600; text-align: center; line-height: 1.2;
+  box-shadow: 0 0.6rem 1.4rem rgb(8 12 9 / 0.45);
+  transform: translate(0, var(--y)) rotate(var(--r));
+  transition: transform var(--duration-soft) var(--ease-soft);
+}
+.crew__item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+@media (min-width: 48rem) { .crew__item { margin-inline: -0.55rem; font-size: var(--step--1); } }
+.crew__item:nth-child(1) { --r: -8deg; --x: -1.4rem; --y: 0.6rem; }
+.crew__item:nth-child(2) { --r: -3deg; --x: -0.7rem; --y: 0.1rem; z-index: 1; }
+.crew__item:nth-child(3) { --r: 1deg; --y: -0.2rem; z-index: 2; }
+.crew__item:nth-child(4) { --r: 4deg; --x: 0.7rem; --y: 0.1rem; z-index: 1; }
+.crew__item:nth-child(5) { --r: 9deg; --x: 1.4rem; --y: 0.6rem; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile--crew:hover .crew__item { transform: translate(var(--x), calc(var(--y) * 0.4 - 0.4rem)) rotate(calc(var(--r) * 0.35)); }
+}
 .tile--deep::before { display: none; }
 .tile--accent { background: var(--color-accent); color: var(--color-accent-contrast); }
 .tile--accent::before { display: none; }

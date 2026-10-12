@@ -3,20 +3,29 @@
 // Вывеска — SVG в координатах фото (viewBox = размер кадра), а preserveAspectRatio повторяет
 // object-fit/object-position у фото, поэтому вывеска всегда висит на одном и том же месте стены.
 // Для вертикальных экранов свой кадр (правая часть того же фото) и своя вывеска.
-import { wordmark } from "../data/wordmark";
+// Вывеска взята с картинки-образца (tools/neon/sign-ref.jpg, скрипт tools/neon/photo.py): выключенные стеклянные
+// трубки с держателями и тенью (neon-glass.webp), свет горящих трубок и свечение на стене (neon-light.webp, режим screen)
+// и тёплый свет на всю комнату (режим overlay). Провода нарисованы линиями. Свет загорается после загрузки фото:
+// мигает и разгорается (main.js, global.css).
+import { neonPhoto } from "../data/neon-photo";
 import { images } from "../data/images";
 import { url } from "../lib/url";
 
 const L = images["hero-l"], P = images["hero-p"];
-// Место вывески в долях исходного кадра 4000×2667: левый верхний угол и ширина
-const at = { x: 0.585, y: 0.3, w: 0.29 };
-const place = (W: number, H: number, dx = 0, k = 1) => {
-  const s = (at.w * 4000 * k) / wordmark.w;
-  const x = (at.x * 4000 - dx) * k - wordmark.x * s;
-  const y = at.y * 2667 * k - wordmark.y * s;
-  return `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)})`;
-};
+// Образец ложится на исходный кадр 4000×2667 так: X = 2.729·x + 1957.3, Y = 2.729·y + 417.7
+const s0 = 2.62 / 0.96, ox = 1879 / 0.96, oy = 401 / 0.96;
+// Середина вывески в исходном кадре: от неё расходится тёплый свет по комнате
+const glow = { x: 330 * s0 + ox, y: 300 * s0 + oy, r: 1900 };
+const place = (dx: number, k: number) => ({
+  transform: `matrix(${(s0 * k).toFixed(4)} 0 0 ${(s0 * k).toFixed(4)} ${((ox - dx) * k).toFixed(1)} ${(oy * k).toFixed(1)})`,
+  glow: { cx: ((glow.x - dx) * k).toFixed(0), cy: (glow.y * k).toFixed(0), r: (glow.r * k).toFixed(0) },
+});
 const kL = L.w / 4000, kP = P.w / 2000; // hero-p вырезан из x = 1880…3880
+const signs = [
+  { id: "l", W: L.w, H: L.h, ratio: "xMaxYMid slice", ...place(0, kL) },
+  { id: "p", W: P.w, H: P.h, ratio: "xMidYMid slice", ...place(1880, kP) },
+];
+const c = neonPhoto.canvas;
 const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets/img/${key}-${w}.webp`)} ${w}w`).join(", ");
 ---
 <div class="hero__stage">
@@ -25,10 +34,27 @@ const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets
     <img src={url("/assets/img/hero-l-1920.webp")} srcset={set("hero-l", L.widths)} sizes="(min-aspect-ratio: 3/2) 100vw, 150svh"
       width={L.w} height={L.h} alt="Зал салона: кирпичная стена, полка с растениями, диван с белыми подушками и неоновая вывеска «Каре»" fetchpriority="high">
   </picture>
-  <svg class="hero__neon hero__neon--l neon neon--on" viewBox={`0 0 ${L.w} ${L.h}`} preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
-    <g transform={place(L.w, L.h, 0, kL)}><path d={wordmark.d} /></g>
-  </svg>
-  <svg class="hero__neon hero__neon--p neon neon--on" viewBox={`0 0 ${P.w} ${P.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-    <g transform={place(P.w, P.h, 1880, kP)}><path d={wordmark.d} /></g>
-  </svg>
+  {signs.map((g) => (
+    <>
+      <svg class={`hero__neon hero__neon--${g.id} hero__room neon-spill`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <radialGradient id={`room-${g.id}`} gradientUnits="userSpaceOnUse" cx={g.glow.cx} cy={g.glow.cy} r={g.glow.r}>
+          <stop offset="0" stop-color="#ff800d" stop-opacity="0.6" />
+          <stop offset="0.25" stop-color="#ff800d" stop-opacity="0.54" />
+          <stop offset="0.5" stop-color="#ff800d" stop-opacity="0.4" />
+          <stop offset="0.75" stop-color="#ff800d" stop-opacity="0.31" />
+          <stop offset="1" stop-color="#ff800d" stop-opacity="0.28" />
+        </radialGradient>
+        <rect width={g.W} height={g.H} fill={`url(#room-${g.id})`} />
+      </svg>
+      <svg class={`hero__neon hero__neon--${g.id}`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <g transform={g.transform}>
+          <g fill="none" stroke="#141011" stroke-width="1.1" stroke-linecap="round">{neonPhoto.wires.map((d) => <path d={d} />)}</g>
+          <image href={url("/assets/img/neon-glass.webp")} x={c.x} y={c.y} width={c.w} height={c.h} preserveAspectRatio="none" />
+        </g>
+      </svg>
+      <svg class={`hero__neon hero__neon--${g.id} hero__light neon-light`} viewBox={`0 0 ${g.W} ${g.H}`} preserveAspectRatio={g.ratio} aria-hidden="true" focusable="false">
+        <image transform={g.transform} href={url("/assets/img/neon-light.webp")} x={c.x} y={c.y} width={c.w} height={c.h} preserveAspectRatio="none" />
+      </svg>
+    </>
+  ))}
 </div>

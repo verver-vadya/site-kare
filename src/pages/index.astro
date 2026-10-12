@@ -58,7 +58,12 @@ const from = (slug: string) => rub(groupFrom(groups.find((g) => g.slug === slug)
         <Photo name="w-balayage" alt="Светлые волосы с плавным переходом от тёмных корней" sizes="(min-width: 48rem) 50vw, 100vw" />
         <div class="tile__body"><h3>Окрашивание</h3><p>Тонирование, балаяж и блонд без желтизны. Консультация бесплатно.</p><span class="link-arrow">от {from("okrashivanie")}</span></div>
       </a>
-      <a class="tile tile--deep" href={url("/mastera/")}>
+      <a class="tile tile--deep tile--crew" href={url("/mastera/")}>
+        <div class="crew" aria-hidden="true" data-overlap-ok>
+          {masters.map((m) => (
+            <span class="crew__item"><Photo name={m.photo} alt="" sizes="9rem" /><span>{m.name.split(" ")[0]}</span></span>
+          ))}
+        </div>
         <div class="tile__body">
           <p class="label" style="color: #ffb699">Мастера</p>
           <h3>Пять мастеров, одна школа</h3>
