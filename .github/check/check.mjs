@@ -323,6 +323,8 @@ async function revealAll(page) {
 function scanOverlap(scope) {
   // Скрытое визуально (в том числе .visually-hidden для экранного диктора) не считается
   const shown = (el) => {
+    // Закрытый <details> и content-visibility: hidden сохраняют размеры, но на экране их нет
+    if (el.checkVisibility && !el.checkVisibility()) return false;
     for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
       const s = getComputedStyle(n);
       const r = n.getBoundingClientRect();
@@ -680,7 +682,8 @@ async function checkForm(browser, url, index) {
   // Подменяем адрес приёма заявок, чтобы управлять ответом сервера
   await form.evaluate((el) => { el.action = `${location.origin}/__check_submit`; });
   const submit = form.locator('[type="submit"]');
-  const status = form.locator('[role="status"], [aria-live]').first();
+  // Строка статуса формы: role="status", а если её нет — первый aria-live (подсказки вроде цены тоже бывают aria-live)
+  const status = (await form.locator('[role="status"]').count()) ? form.locator('[role="status"]').first() : form.locator("[aria-live]").first();
   let requests = 0;
   let mode = { status: 200, delay: 0, abort: false };
   await page.route("**/__check_submit", async (route) => {
