@@ -1,0 +1,37 @@
+---
+// Таблица цен группы услуг по уровням мастеров. На телефоне строки становятся карточками (см. .prices в CSS).
+import { levels, type Group } from "../data/services";
+import { url, rub } from "../lib/url";
+interface Props { group: Group; heading?: "h2" | "h3"; link?: boolean }
+const { group, heading = "h2", link = false } = Astro.props;
+const H = heading;
+const cell = (s: Group["services"][number], i: number) =>
+  s.free ? "бесплатно" : `${s.from ? "от " : ""}${rub(Array.isArray(s.prices) ? s.prices[i] : s.prices)}`;
+---
+<div class="prices__scroll">
+  <table class="prices">
+    <caption>
+      <H id={`price-${group.slug}`}>{link ? <a href={url(`/uslugi/${group.slug}/`)} style="color: inherit">{group.name}</a> : group.name}</H>
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Услуга</th>
+        <th scope="col">Время</th>
+        {levels.map((l) => <th scope="col" class="num">{l.name}</th>)}
+        <th scope="col"><span class="visually-hidden">Запись</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {group.services.map((s) => (
+        <tr>
+          <th scope="row">{s.name}{s.note && <small>{s.note}</small>}</th>
+          <td class="time">{s.time}</td>
+          {Array.isArray(s.prices)
+            ? levels.map((l, i) => <td class="num" data-level={l.name}>{cell(s, i)}</td>)
+            : <td class="num num--one" colspan="3">{cell(s, 0)}{!s.free && <span class="muted"> у&nbsp;всех мастеров</span>}</td>}
+          <td class="book"><a href={url(`/zapis/?usluga=${s.id}`)} aria-label={`Записаться: ${s.name}`}>Записаться</a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

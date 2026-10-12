@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Photo from "../components/Photo.astro";
+import Band from "../components/Band.astro";
+import { works, categories } from "../data/works";
+import { masterBySlug } from "../data/masters";
+import { url } from "../lib/url";
+---
+<Base title="Работы мастеров — салон «Каре»" description="Лукбук салона «Каре»: каре, короткие стрижки, окрашивание, кудри и укладки. У каждой работы мастер и запись к нему.">
+  <PageHead title="Работы" label="Лукбук" crumbs={[{ href: "/raboty/", label: "Работы" }]}
+    lead="Понравилась стрижка — нажмите «Хочу так же»: в&nbsp;записи сразу выберутся услуга и&nbsp;мастер." />
+
+  <section class="section" aria-label="Работы">
+    <div class="container">
+      <div class="filter" role="group" aria-label="Показать работы по рубрике" data-filter="works">
+        <button type="button" aria-pressed="true" data-value="">Все</button>
+        {categories.map((c) => <button type="button" aria-pressed="false" data-value={c.id}>{c.name}</button>)}
+      </div>
+      <div class="lookbook" data-filter-list>
+        {works.map((w) => {
+          const m = masterBySlug(w.master)!;
+          return (
+            <figure class="look" data-groups={w.cats.join(" ")}>
+              <Photo name={w.key} alt={w.alt} sizes="(min-width: 62rem) 30vw, 45vw" />
+              <figcaption>
+                <b>{w.title}</b>
+                {w.text}
+                <span class="look__links">
+                  <a href={url(`/mastera/${m.slug}/`)}>{m.name}</a>
+                  <a href={url(`/zapis/?usluga=${w.service}&master=${m.slug}`)}>Хочу так же</a>
+                </span>
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <Band />
+</Base>

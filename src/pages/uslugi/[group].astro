@@ -1,0 +1,83 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Photo from "../../components/Photo.astro";
+import PriceTable from "../../components/PriceTable.astro";
+import Levels from "../../components/Levels.astro";
+import MasterCard from "../../components/MasterCard.astro";
+import WorkStrip from "../../components/WorkStrip.astro";
+import Faq from "../../components/Faq.astro";
+import Band from "../../components/Band.astro";
+import { groups, type Group } from "../../data/services";
+import { mastersFor } from "../../data/masters";
+import { url } from "../../lib/url";
+
+export function getStaticPaths() {
+  return groups.map((group) => ({ params: { group: group.slug }, props: { group } }));
+}
+const { group } = Astro.props as { group: Group };
+const team = mastersFor(group.slug);
+const others = groups.filter((g) => g.slug !== group.slug);
+---
+<Base title={`${group.name}: цены и запись — салон «Каре»`} description={`${group.name} в салоне «Каре» на Малой Бронной: ${group.short.toLowerCase()}. Цены по уровням мастеров, как проходит, примеры работ и онлайн-запись.`}>
+  <PageHead title={group.name} label="Услуги" lead={group.lead}
+    crumbs={[{ href: "/uslugi/", label: "Услуги и цены" }, { href: `/uslugi/${group.slug}/`, label: group.name }]} />
+
+  <section class="section" aria-labelledby="how-title">
+    <div class="container split">
+      <div class="split__media"><Photo name={group.photo} alt={group.photoAlt} sizes="(min-width: 62rem) 40vw, 100vw" eager /></div>
+      <div class="split__text">
+        <p class="label">Как проходит</p>
+        <h2 id="how-title">Шаг за&nbsp;шагом</h2>
+        <ol class:list={["steps", group.steps.length === 3 ? "steps--3" : ""]} style="margin-top: var(--space-m)">
+          {group.steps.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-label="Цены">
+    <div class="container">
+      <Levels />
+      <PriceTable group={group} />
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-label="Фото процесса">
+    <div class="container duo">
+      {group.process.map((p) => <Photo name={p.key} alt={p.alt} sizes="(min-width: 48rem) 55vw, 100vw" />)}
+    </div>
+  </section>
+
+  <section class="section deep" aria-labelledby="team-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Кто делает</p>
+        <h2 id="team-title">Мастера</h2>
+        <a class="link-arrow" href={url("/mastera/")}>Все мастера</a>
+      </div>
+      <ul class="masters" style={`--n: ${Math.max(team.length, 3)}`}>{team.map((m) => <MasterCard master={m} />)}</ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="works-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Работы</p>
+        <h2 id="works-title">Примеры</h2>
+        <a class="link-arrow" href={url("/raboty/")}>Все работы</a>
+      </div>
+      <WorkStrip keys={group.works} />
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="head"><p class="label">Вопросы</p><h2 id="faq-title">Часто спрашивают</h2></div>
+      <Faq items={group.faq} />
+      <p style="margin-top: var(--space-l)" class="muted">Другие услуги: {others.map((g, i) => <>{i > 0 && ", "}<a href={url(`/uslugi/${g.slug}/`)}>{g.name.toLowerCase()}</a></>)}.</p>
+    </div>
+  </section>
+
+  <Band title={`Записаться ${group.book}`} text="Выберите услугу, мастера и&nbsp;день. Администратор перезвонит и&nbsp;подтвердит время." href={`/zapis/?usluga=${group.services[0].id}`} button="Перейти к записи" />
+</Base>

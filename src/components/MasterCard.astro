@@ -1,0 +1,16 @@
+---
+import Photo from "./Photo.astro";
+import { levels } from "../data/services";
+import { url } from "../lib/url";
+import type { Master } from "../data/masters";
+interface Props { master: Master; heading?: "h2" | "h3"; sizes?: string }
+const { master: m, heading = "h3", sizes = "(min-width: 75rem) 18vw, (min-width: 48rem) 30vw, 45vw" } = Astro.props;
+const H = heading;
+const level = levels.find((l) => l.id === m.level)!;
+---
+<li class="master-card" data-groups={m.groups.join(" ")}>
+  <div class="master-card__photo"><Photo name={m.photo} alt={m.photoAlt} sizes={sizes} /></div>
+  <p class="master-card__level">{level.name}</p>
+  <H><a href={url(`/mastera/${m.slug}/`)}>{m.name}</a></H>
+  <p class="master-card__role">{m.role}</p>
+</li>

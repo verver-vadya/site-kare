@@ -4,6 +4,7 @@
 //
 //   npm run check           ошибки валят проверку, заглушки только предупреждают (черновик)
 //   npm run check:release   заглушки тоже валят проверку (перед публикацией на боевой адрес)
+//   npm run check -- --site <папка>   проверить собранный сайт из этой папки (например, ../../dist)
 //   npm run check -- --base <папка>   ещё сравнить размеры блоков с прошлой версией сайта из этой папки
 //
 // Скриншоты и отчёт складываются в .check/ в корне сайта.
@@ -16,6 +17,9 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const OUT = path.join(ROOT, ".check");
+// Собранный сайт (Astro, папка dist): npm run check -- --site ../../dist. Без флага проверяется корень репозитория
+const SITE_ARG = process.argv.indexOf("--site");
+const SITE = SITE_ARG > 0 && process.argv[SITE_ARG + 1] ? path.resolve(process.argv[SITE_ARG + 1]) : ROOT;
 const RELEASE = process.argv.includes("--release");
 const BASE_ARG = process.argv.indexOf("--base");
 const BASE = BASE_ARG > 0 && process.argv[BASE_ARG + 1] ? path.resolve(process.argv[BASE_ARG + 1]) : null;
@@ -95,7 +99,7 @@ const TYPES = {
   ".txt": "text/plain; charset=utf-8", ".ico": "image/x-icon", ".pdf": "application/pdf",
 };
 
-async function resolveFile(urlPath, root = ROOT) {
+async function resolveFile(urlPath, root = SITE) {
   const rel = decodeURIComponent(urlPath.split("?")[0]).replace(/^\/+/, "");
   if (rel.split("/").some((part) => part.startsWith(".") || part === "node_modules")) return null;
   let file = path.join(root, rel);
@@ -108,7 +112,7 @@ async function resolveFile(urlPath, root = ROOT) {
   }
 }
 
-function startServer(root = ROOT) {
+function startServer(root = SITE) {
   const server = http.createServer(async (req, res) => {
     if (req.method === "POST") { res.writeHead(405).end(); return; }
     const file = await resolveFile(new URL(req.url, "http://x").pathname, root);
@@ -786,7 +790,7 @@ const titles = new Map();
 const boxes = new Map();
 
 for (const file of ["robots.txt", "sitemap.xml"]) {
-  const text = await fs.readFile(path.join(ROOT, file), "utf8").catch(() => null);
+  const text = await fs.readFile(path.join(SITE, file), "utf8").catch(() => null);
   if (text === null) error(file, "файла нет");
   else await checkSourceText(file, text);
 }

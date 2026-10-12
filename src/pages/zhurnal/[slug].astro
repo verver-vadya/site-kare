@@ -1,0 +1,71 @@
+---
+import Base from "../../layouts/Base.astro";
+import Photo from "../../components/Photo.astro";
+import Band from "../../components/Band.astro";
+import { articles, formatDate, type Article } from "../../data/journal";
+import { masterBySlug } from "../../data/masters";
+import { serviceById } from "../../data/services";
+import { url } from "../../lib/url";
+
+export function getStaticPaths() {
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+const { article: a } = Astro.props as { article: Article };
+const author = masterBySlug(a.author)!;
+const service = serviceById(a.service)!;
+const more = articles.filter((x) => x.slug !== a.slug);
+---
+<Base title={`${a.title} — журнал салона «Каре»`} description={a.lead}>
+  <article>
+    <header class="page-head">
+      <div class="container" style="max-width: 52rem">
+        <nav aria-label="Вы здесь">
+          <ol class="crumbs">
+            <li><a href={url("/")}>Главная</a></li>
+            <li><a href={url("/zhurnal/")}>Журнал</a></li>
+          </ol>
+        </nav>
+        <p class="label" style="margin-top: var(--space-m)">{a.rubric}</p>
+        <h1 style="font-size: var(--step-4); margin-block: var(--space-xs) var(--space-m)">{a.title}</h1>
+        <p class="page-head__lead">{a.lead}</p>
+        <p class="article__meta" style="margin-top: var(--space-m)">
+          <span>Автор: <a href={url(`/mastera/${author.slug}/`)}>{author.name}</a></span>
+          <time datetime={a.date}>{formatDate(a.date)}</time>
+          <span>{a.readMin} мин чтения</span>
+        </p>
+      </div>
+    </header>
+    <figure class="article__cover"><Photo name={a.cover} alt={a.coverAlt} sizes="100vw" eager /></figure>
+    <div class="container section">
+      <div class="article__body">
+        {a.body.map((b) =>
+          "p" in b ? <p>{b.p}</p> :
+          "h2" in b ? <h2>{b.h2}</h2> :
+          "list" in b ? <ul>{b.list.map((li) => <li>{li}</li>)}</ul> :
+          <blockquote><p>«{b.quote}»</p><footer><a href={url(`/mastera/${b.by}/`)}>{masterBySlug(b.by)?.name}</a></footer></blockquote>
+        )}
+        <p style="margin-top: var(--space-l)"><a class="button" href={url(`/zapis/?usluga=${service.id}&master=${author.slug}`)}>Записаться к&nbsp;{author.nameDative}</a></p>
+      </div>
+    </div>
+  </article>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="more-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Журнал</p>
+        <h2 id="more-title">Ещё статьи</h2>
+        <a class="link-arrow" href={url("/zhurnal/")}>Все статьи</a>
+      </div>
+      <ul class="articles">
+        {more.map((x) => (
+          <li class="article-card">
+            <div class="article-card__photo"><Photo name={x.cover} alt={x.coverAlt} sizes="(min-width: 48rem) 45vw, 100vw" /></div>
+            <p class="article-card__meta">{x.rubric} · {formatDate(x.date)}</p>
+            <h3><a href={url(`/zhurnal/${x.slug}/`)}>{x.title}</a></h3>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <Band />
+</Base>

@@ -1,0 +1,106 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { site } from "../data/site";
+import { groups, levels } from "../data/services";
+import { masters } from "../data/masters";
+import { url } from "../lib/url";
+const levelIndex = (id: string) => levels.findIndex((l) => l.id === id);
+const pricesAttr = (s: (typeof groups)[number]["services"][number]) =>
+  s.free ? "0" : (Array.isArray(s.prices) ? s.prices : [s.prices, s.prices, s.prices]).join(",");
+---
+<Base title="Онлайн-запись — салон «Каре»" description="Запишитесь в салон «Каре» онлайн: выберите услугу, мастера и день. Администратор перезвонит и подтвердит время." form>
+  <PageHead title="Запись" label="Онлайн" crumbs={[{ href: "/zapis/", label: "Запись" }]}
+    lead="Выберите услугу, мастера и&nbsp;удобный день. Администратор перезвонит в&nbsp;течение 15&nbsp;минут и&nbsp;подтвердит время." />
+
+  <section class="section">
+    <div class="container booking">
+      <!-- В боевой версии здесь встаёт виджет сервиса записи салона (DIKIDI или YClients) с живым расписанием мастеров.
+           Пока его нет, форма отправляет заявку администратору (Formspree, адрес в src/data/site.ts). -->
+      <form class="form booking__form" action={site.formAction} method="post" data-form data-booking>
+        <fieldset class="form__group">
+          <legend>1. Услуга и&nbsp;мастер</legend>
+          <div class="field">
+            <label for="b-service">Услуга</label>
+            <select id="b-service" name="service" required data-error-required="Выберите услугу или «Пока не знаю»">
+              <option value="">Выберите услугу</option>
+              {groups.map((g) => (
+                <optgroup label={g.name}>
+                  {g.services.map((s) => <option value={s.name} data-id={s.id} data-prices={pricesAttr(s)} data-from={s.from ? "1" : undefined}>{s.name}</option>)}
+                </optgroup>
+              ))}
+              <option data-id="certificate">Подарочный сертификат</option>
+              <option data-id="consult-free">Пока не знаю, нужна консультация</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="b-master">Мастер</label>
+            <select id="b-master" name="master">
+              <option>Любой свободный</option>
+              {masters.map((m) => <option value={m.name} data-id={m.slug} data-level={levelIndex(m.level)}>{m.name}, {levels[levelIndex(m.level)].name.toLowerCase()}</option>)}
+            </select>
+          </div>
+          <p class="booking__price muted" aria-live="polite" hidden></p>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend>2. Когда</legend>
+          <div class="form__row">
+            <div class="field">
+              <label for="b-date">День</label>
+              <input id="b-date" name="date" type="date" required data-error-required="Выберите день">
+            </div>
+            <div class="field">
+              <label for="b-time">Время</label>
+              <select id="b-time" name="time">
+                <option>Любое</option>
+                <option>Утро, 10–13</option>
+                <option>День, 13–17</option>
+                <option>Вечер, 17–22</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend>3. Как с&nbsp;вами связаться</legend>
+          <div class="field">
+            <label for="b-name">Имя</label>
+            <input id="b-name" name="name" type="text" autocomplete="name" required minlength="2" data-error-required="Напишите, как к вам обращаться">
+          </div>
+          <div class="field">
+            <label for="b-phone">Телефон</label>
+            <input id="b-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required data-validate="phone"
+              aria-describedby="b-phone-hint" data-error-required="Укажите телефон, чтобы администратор подтвердил запись">
+            <p class="field__hint" id="b-phone-hint">В любом формате, с +7 или 8</p>
+          </div>
+          <div class="field">
+            <label for="b-message">Пожелания <span class="field__optional">(необязательно)</span></label>
+            <textarea id="b-message" name="message" rows="3" maxlength="1000"></textarea>
+          </div>
+        </fieldset>
+        <div class="field field--check">
+          <input id="b-consent" name="consent" type="checkbox" value="да" required
+            data-error-required="Без согласия на обработку данных мы не можем принять запись">
+          <label for="b-consent">Даю согласие на&nbsp;обработку персональных данных по&nbsp;<a href={url("/privacy/")}>политике конфиденциальности</a></label>
+        </div>
+        <input class="form__trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="button" type="submit">Отправить запись</button>
+        <p class="form__status" role="status" aria-live="polite" hidden></p>
+      </form>
+
+      <aside class="booking__aside" aria-label="Что будет дальше">
+        <div class="booking__card">
+          <h2 style="font-size: var(--step-2)">Что дальше</h2>
+          <ol class="steps" style="grid-template-columns: 1fr; gap: var(--space-s)">
+            <li><h3>Звонок</h3><p>Администратор перезвонит в&nbsp;течение 15&nbsp;минут с&nbsp;10:00 до&nbsp;22:00.</p></li>
+            <li><h3>Время</h3><p>Подберёт время у&nbsp;мастера и&nbsp;пришлёт напоминание за&nbsp;день.</p></li>
+            <li><h3>Визит</h3><p>Отменить или перенести можно бесплатно за&nbsp;сутки.</p></li>
+          </ol>
+        </div>
+        <p>Удобнее по&nbsp;телефону: <a href={site.phoneHref} style="white-space: nowrap; font-weight: 600">{site.phone}</a></p>
+        <p class="muted">{site.addressFull}. <a href={url("/kontakty/")}>Как пройти</a></p>
+      </aside>
+    </div>
+  </section>
+</Base>

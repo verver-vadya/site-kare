@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Photo from "../components/Photo.astro";
+import { site } from "../data/site";
+import { url } from "../lib/url";
+---
+<Base title="Контакты и адрес — салон «Каре»" description={`Салон «Каре»: ${site.addressFull}. ${site.metro}. ${site.hours}. Телефон ${site.phone}.`}>
+  <PageHead title="Контакты" label="Как добраться" crumbs={[{ href: "/kontakty/", label: "Контакты" }]}
+    lead={`${site.addressFull}. ${site.hours}.`} />
+  <section class="section">
+    <div class="container contacts">
+      <div>
+        <dl class="contacts__list">
+          <div><dt>Адрес</dt><dd>{site.addressFull}</dd></div>
+          <div><dt>Метро</dt><dd>{site.metro}</dd></div>
+          <div><dt>Часы</dt><dd>{site.hours}</dd></div>
+          <div><dt>Телефон</dt><dd><a href={site.phoneHref}>{site.phone.replace(/ /g, " ")}</a></dd></div>
+          <div><dt>Telegram</dt><dd><a href={`https://t.me/${site.telegram}`} target="_blank" rel="noopener">@{site.telegram}</a></dd></div>
+        </dl>
+        <p style="display: flex; flex-wrap: wrap; gap: var(--space-s) var(--space-m); align-items: center; margin-top: var(--space-m)">
+          <a class="button" href={url("/zapis/")}>Записаться онлайн</a>
+          <a class="link-arrow" href={site.mapUrl} target="_blank" rel="noopener">Открыть в&nbsp;Яндекс Картах</a>
+        </p>
+      </div>
+      <div>
+        <h2 style="font-size: var(--step-3); margin-bottom: var(--space-m)">Как пройти со&nbsp;двора</h2>
+        <ol class="route">
+          <li><p>Идите по&nbsp;Малой Бронной от&nbsp;Патриарших к&nbsp;Тверскому бульвару, до&nbsp;дома&nbsp;24.</p></li>
+          <li><p>Справа от&nbsp;кофейни арка во&nbsp;двор, калитка открыта с&nbsp;10:00 до&nbsp;22:00.</p></li>
+          <li><p>Во&nbsp;дворе кирпичный флигель с&nbsp;зелёной дверью и&nbsp;вывеской «Каре». Звонок справа.</p></li>
+        </ol>
+        <figure class="contacts__photo" style="margin-top: var(--space-l)"><Photo name="int-court" alt="Столики и стулья у кирпичной стены во дворе" sizes="(min-width: 62rem) 45vw, 100vw" /></figure>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,123 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Photo from "../components/Photo.astro";
+import Band from "../components/Band.astro";
+import { site } from "../data/site";
+import { masters, masterBySlug } from "../data/masters";
+import { articles, formatDate } from "../data/journal";
+import { groups, groupFrom } from "../data/services";
+import { url, rub } from "../lib/url";
+const anna = masterBySlug("anna-vetrova")!;
+const from = (slug: string) => rub(groupFrom(groups.find((g) => g.slug === slug)!));
+---
+<Base
+  title="Каре — салон стрижки и окрашивания на Малой Бронной"
+  description="Салон «Каре» в Москве: каре и короткие стрижки, окрашивание без аммиака, укладки. Цены по уровням мастеров, онлайн-запись, ежедневно с 10:00 до 22:00."
+  overHero
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <Hero />
+    <div class="hero__text">
+      <div class="container">
+        <p class="label hero__since">С {site.since} года на Малой Бронной</p>
+        <h1 id="hero-title">Дом короткой стрижки</h1>
+        <p class="hero__lead">Каре, пикси и чёлка, цвет без желтизны и укладки в тёплом зале со двора на Малой Бронной.</p>
+        <div class="hero__actions">
+          <a class="button" href={url("/zapis/")}>Записаться онлайн</a>
+          <a class="button button--ghost" href={url("/uslugi/")}>Услуги и цены</a>
+          <p class="hero__hours">{site.hours}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="Коротко о салоне">
+    <div class="container">
+      <ul>
+        <li><b>С {site.since}</b><span>стрижём на Малой Бронной</span></li>
+        <li><b>{masters.length} мастеров</b><span>одна школа и одна техника</span></li>
+        <li><b>0 ₽</b><span>консультация колориста перед цветом</span></li>
+        <li><b>10–22</b><span>каждый день, без выходных</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="sections-title">
+    <div class="container head head--row">
+      <p class="label">Что мы делаем</p>
+      <h2 id="sections-title">Стрижка, цвет и&nbsp;укладка</h2>
+      <a class="link-arrow" href={url("/uslugi/")}>Все услуги и цены</a>
+    </div>
+    <div class="tiles">
+      <a class="tile" href={url("/uslugi/strizhki/")}>
+        <Photo name="w-camera" alt="Девушка с чёрным каре и густой чёлкой держит фотоаппарат" sizes="(min-width: 48rem) 50vw, 100vw" />
+        <div class="tile__body"><h3>Стрижки</h3><p>Каре, боб, пикси и чёлка. Форма держится без укладки.</p><span class="link-arrow">от {from("strizhki")}</span></div>
+      </a>
+      <a class="tile" href={url("/uslugi/okrashivanie/")}>
+        <Photo name="w-balayage" alt="Светлые волосы с плавным переходом от тёмных корней" sizes="(min-width: 48rem) 50vw, 100vw" />
+        <div class="tile__body"><h3>Окрашивание</h3><p>Тонирование, балаяж и блонд без желтизны. Консультация бесплатно.</p><span class="link-arrow">от {from("okrashivanie")}</span></div>
+      </a>
+      <a class="tile tile--deep" href={url("/mastera/")}>
+        <div class="tile__body">
+          <p class="label" style="color: #ffb699">Мастера</p>
+          <h3>Пять мастеров, одна школа</h3>
+          <p>Все учились у&nbsp;Анны Ветровой и&nbsp;стригут по&nbsp;одной технике. Цена зависит от&nbsp;уровня мастера, а&nbsp;не&nbsp;от&nbsp;дня недели.</p>
+          <span class="link-arrow">Выбрать мастера</span>
+        </div>
+      </a>
+      <a class="tile" href={url("/o-salone/")}>
+        <Photo name="int-sinks" alt="Две раковины для мытья головы у кирпичной стены, между ними пальма" sizes="(min-width: 48rem) 50vw, 100vw" />
+        <div class="tile__body"><h3>Салон</h3><p>Кирпич, дерево и&nbsp;растения. Вход со&nbsp;двора, кофе пока сохнет краска.</p><span class="link-arrow">О салоне</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="signature-title">
+    <div class="container split">
+      <div class="split__media"><Photo name="w-profile" alt="Девушка с короткой стрижкой и асимметричной чёлкой, профиль" sizes="(min-width: 62rem) 40vw, 100vw" /></div>
+      <div class="split__text">
+        <p class="label">Фирменная стрижка</p>
+        <h2 id="signature-title">Каре по линии скул</h2>
+        <p class="lead">Срез по&nbsp;линии скул и&nbsp;внутренняя градуировка: волосы сами заворачиваются внутрь, а&nbsp;через месяц форма не&nbsp;расходится в&nbsp;стороны.</p>
+        <p class="muted">Эту технику придумала основательница салона Анна Ветрова. По ней стригут все мастера «Каре», поэтому прийти на&nbsp;коррекцию можно к&nbsp;любому.</p>
+        <p style="display: flex; flex-wrap: wrap; gap: var(--space-s) var(--space-m); align-items: center">
+          <a class="button" href={url("/zapis/?usluga=kare")}>Записаться на каре</a>
+          <a class="link-arrow" href={url("/zhurnal/kare-bez-ukladki/")}>Как мы строим форму</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote section" aria-label="Слово основательницы">
+    <div class="container quote__grid">
+      <div class="quote__photo"><Photo name={anna.photo} alt={anna.photoAlt} sizes="(min-width: 62rem) 22rem, 80vw" /></div>
+      <figure>
+        <blockquote><p>{anna.quote}</p></blockquote>
+        <figcaption><a href={url(`/mastera/${anna.slug}/`)}>{anna.name}</a>, основательница салона</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="journal-title">
+    <div class="container">
+      <div class="head head--row">
+        <p class="label">Журнал</p>
+        <h2 id="journal-title">Мастера пишут о&nbsp;волосах</h2>
+        <a class="link-arrow" href={url("/zhurnal/")}>Все статьи</a>
+      </div>
+      <ul class="articles">
+        {articles.map((a) => (
+          <li class="article-card">
+            <div class="article-card__photo"><Photo name={a.cover} alt={a.coverAlt} sizes="(min-width: 62rem) 30vw, (min-width: 48rem) 45vw, 100vw" /></div>
+            <p class="article-card__meta">{a.rubric} · {formatDate(a.date)}</p>
+            <h3><a href={url(`/zhurnal/${a.slug}/`)}>{a.title}</a></h3>
+            <p>{a.lead}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Band />
+</Base>

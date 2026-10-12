@@ -1,0 +1,6 @@
+---
+import { levels } from "../data/services";
+---
+<ul class="levels" aria-label="Уровни мастеров">
+  {levels.map((l) => <li><b>{l.name}</b><span>{l.note}</span></li>)}
+</ul>

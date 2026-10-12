@@ -1,0 +1,34 @@
+---
+// Первый экран главной: интерьер салона и неоновая вывеска «Каре» на кирпичной стене.
+// Вывеска — SVG в координатах фото (viewBox = размер кадра), а preserveAspectRatio повторяет
+// object-fit/object-position у фото, поэтому вывеска всегда висит на одном и том же месте стены.
+// Для вертикальных экранов свой кадр (правая часть того же фото) и своя вывеска.
+import { wordmark } from "../data/wordmark";
+import { images } from "../data/images";
+import { url } from "../lib/url";
+
+const L = images["hero-l"], P = images["hero-p"];
+// Место вывески в долях исходного кадра 4000×2667: левый верхний угол и ширина
+const at = { x: 0.585, y: 0.3, w: 0.29 };
+const place = (W: number, H: number, dx = 0, k = 1) => {
+  const s = (at.w * 4000 * k) / wordmark.w;
+  const x = (at.x * 4000 - dx) * k - wordmark.x * s;
+  const y = at.y * 2667 * k - wordmark.y * s;
+  return `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)})`;
+};
+const kL = L.w / 4000, kP = P.w / 2000; // hero-p вырезан из x = 1880…3880
+const set = (key: string, widths: number[]) => widths.map((w) => `${url(`/assets/img/${key}-${w}.webp`)} ${w}w`).join(", ");
+---
+<div class="hero__stage">
+  <picture>
+    <source media="(max-aspect-ratio: 1/1)" srcset={set("hero-p", P.widths)} sizes="100vw" width={P.w} height={P.h}>
+    <img src={url("/assets/img/hero-l-1920.webp")} srcset={set("hero-l", L.widths)} sizes="(min-aspect-ratio: 3/2) 100vw, 150svh"
+      width={L.w} height={L.h} alt="Зал салона: кирпичная стена, полка с растениями, диван с белыми подушками и неоновая вывеска «Каре»" fetchpriority="high">
+  </picture>
+  <svg class="hero__neon hero__neon--l neon neon--on" viewBox={`0 0 ${L.w} ${L.h}`} preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+    <g transform={place(L.w, L.h, 0, kL)}><path d={wordmark.d} /></g>
+  </svg>
+  <svg class="hero__neon hero__neon--p neon neon--on" viewBox={`0 0 ${P.w} ${P.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <g transform={place(P.w, P.h, 1880, kP)}><path d={wordmark.d} /></g>
+  </svg>
+</div>

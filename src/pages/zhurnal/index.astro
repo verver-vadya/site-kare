@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Photo from "../../components/Photo.astro";
+import { articles, formatDate } from "../../data/journal";
+import { masterBySlug } from "../../data/masters";
+import { url } from "../../lib/url";
+---
+<Base title="Журнал — салон «Каре»" description="Статьи мастеров салона «Каре» о стрижках, цвете и уходе за волосами: как ухаживать за каре, блондом и кудрями дома.">
+  <PageHead title="Журнал" label="Мастера пишут" crumbs={[{ href: "/zhurnal/", label: "Журнал" }]}
+    lead="Короткие статьи о&nbsp;том, что мы&nbsp;делаем в&nbsp;салоне и&nbsp;как сохранить результат дома." />
+  <section class="section">
+    <div class="container">
+      <ul class="articles articles--lead">
+        {articles.map((a, i) => (
+          <li class="article-card">
+            <div class="article-card__photo"><Photo name={a.cover} alt={a.coverAlt} sizes={i === 0 ? "(min-width: 62rem) 55vw, 100vw" : "(min-width: 62rem) 30vw, (min-width: 48rem) 45vw, 100vw"} eager={i === 0} /></div>
+            <p class="article-card__meta">{a.rubric} · {formatDate(a.date)} · {a.readMin} мин</p>
+            <h2><a href={url(`/zhurnal/${a.slug}/`)}>{a.title}</a></h2>
+            <p>{a.lead}</p>
+            <p class="article-card__meta">{masterBySlug(a.author)?.name}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

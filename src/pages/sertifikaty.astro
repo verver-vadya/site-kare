@@ -1,0 +1,51 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Wordmark from "../components/Wordmark.astro";
+import Photo from "../components/Photo.astro";
+import { rub } from "../lib/url";
+import { url } from "../lib/url";
+const certs = [
+  { sum: 3000, text: "Чёлка, укладка или уход", tone: "light" },
+  { sum: 5000, text: "Стрижка у любого мастера", tone: "deep" },
+  { sum: 10000, text: "Окрашивание или стрижка с укладкой", tone: "accent" },
+];
+---
+<Base title="Подарочные сертификаты — салон «Каре»" description="Подарочные сертификаты салона «Каре» на 3 000, 5 000 и 10 000 рублей или на конкретную услугу. Действуют год, у всех мастеров.">
+  <PageHead title="Подарочные сертификаты" label="В подарок" crumbs={[{ href: "/sertifikaty/", label: "Сертификаты" }]}
+    lead="На&nbsp;сумму или на&nbsp;услугу. Действует год, у&nbsp;всех мастеров, можно потратить за&nbsp;несколько визитов." />
+
+  <section class="section" aria-labelledby="certs-title">
+    <div class="container">
+      <h2 id="certs-title" class="visually-hidden">Номиналы</h2>
+      <ul class="certs">
+        {certs.map((c) => (
+          <li class:list={["cert", c.tone !== "deep" && `cert--${c.tone}`]}>
+            <Wordmark neon />
+            <div><b>{rub(c.sum)}</b><p>{c.text}</p></div>
+          </li>
+        ))}
+        <li class="cert cert--light">
+          <Wordmark neon />
+          <div><b>Любая сумма</b><p>или конкретная услуга у&nbsp;выбранного мастера</p></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-labelledby="how-title">
+    <div class="container split split--flip">
+      <div class="split__media"><Photo name="int-clock" alt="Часы и букет розовых пионов на деревянном столике" sizes="(min-width: 62rem) 40vw, 100vw" /></div>
+      <div class="split__text">
+        <p class="label">Как получить</p>
+        <h2 id="how-title">В&nbsp;салоне или онлайн</h2>
+        <ol class="steps" style="grid-template-columns: 1fr; margin-top: var(--space-m)">
+          <li><h3>Оставьте заявку</h3><p>Выберите в&nbsp;записи «Подарочный сертификат» и&nbsp;напишите сумму в&nbsp;пожеланиях. Или позвоните.</p></li>
+          <li><h3>Оплатите</h3><p>Администратор пришлёт ссылку на&nbsp;оплату или ждёт вас в&nbsp;салоне.</p></li>
+          <li><h3>Подарите</h3><p>Электронный сертификат придёт в&nbsp;Telegram или на&nbsp;почту, бумажный — в&nbsp;конверте с&nbsp;вывеской салона.</p></li>
+        </ol>
+        <p style="margin-top: var(--space-m)"><a class="button" href={url("/zapis/?usluga=certificate")}>Заказать сертификат</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
