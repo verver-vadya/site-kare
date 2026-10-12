@@ -8,5 +8,3 @@ node_modules/
 .base-site/
 dist/
 .astro/
-tools/neon/*.png
-tools/neon/*.json
