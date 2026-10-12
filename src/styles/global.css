@@ -177,8 +177,6 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 /* ---------- Неоновая вывеска ---------- */
 .neon path { fill: #fff4ea; }
 .neon { filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 6px var(--color-neon)) drop-shadow(0 0 18px #ff5f2e) drop-shadow(0 0 42px rgb(255 90 40 / 0.65)); }
-/* Трубка без света: бледное стекло с тонким краем, тень на стене задаёт SVG-фильтр в Hero.astro */
-.neon-tube { fill: rgb(232 214 200 / 0.3); stroke: rgb(30 18 12 / 0.55); stroke-width: 1px; vector-effect: non-scaling-stroke; }
 /* Розжиг как у настоящего неона: после загрузки фото три коротких вспышки, пауза и плавное разгорание.
    Не больше трёх вспышек в секунду. Без JS и в режиме без анимаций вывеска просто горит. */
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
