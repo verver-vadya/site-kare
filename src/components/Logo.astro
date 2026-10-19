@@ -1,0 +1,17 @@
+---
+// Логотип: «К» из раскрытых ножниц и «АРЕ». Ствол и буквы цветом текста, лезвия и винт цветом --logo-accent.
+import { logo } from "../data/logo";
+interface Props { class?: string; title?: string }
+const { class: className, title } = Astro.props;
+const pad = 20;
+---
+<svg class:list={["logo-mark", className]} viewBox={`${-pad} ${-pad} ${logo.width + 2 * pad} ${logo.cap + 2 * pad}`} role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : "true"} focusable="false">
+  <g transform={`translate(0 ${logo.cap}) scale(1 -1)`}>
+    <path d={logo.stem} />
+    <g class="logo-mark__blade">
+      {logo.blades.map((d) => <path d={d} />)}
+      <path d={logo.screw} fill-rule="evenodd" />
+    </g>
+    <path d={logo.letters} />
+  </g>
+</svg>

@@ -1,7 +1,7 @@
 ---
 import { nav } from "../data/site";
 import { url } from "../lib/url";
-import Wordmark from "./Wordmark.astro";
+import Logo from "./Logo.astro";
 interface Props { over?: boolean }
 const { over = false } = Astro.props;
 // Текущий раздел: адрес страницы начинается с адреса пункта меню
@@ -10,7 +10,7 @@ const isCurrent = (href: string) => here === href || here.startsWith(href);
 ---
 <header class:list={["site-header", { "site-header--over": over }]}>
   <div class="container site-header__inner">
-    <a class="logo" href={url("/")} aria-label="Каре, на главную"><Wordmark /></a>
+    <a class="logo" href={url("/")} aria-label="Каре, на главную"><Logo /></a>
     <nav id="site-nav" class="site-nav" aria-label="Основное меню">
       <ul>
         {nav.map((item) => (

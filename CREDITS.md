@@ -57,8 +57,7 @@
 Лицензия SIL Open Font License 1.1, тексты лицензий в `src/fonts/OFL-*.txt`. Файлы взяты из пакетов [Fontsource](https://fontsource.org).
 
 - [Amatic SC](https://github.com/googlefonts/AmaticSC) — Vernon Adams, Ben Nathan: заголовки и меню
-- [Manrope](https://github.com/sharanda/manrope) — Mikhail Sharanda: основной текст
-- [Bad Script](https://github.com/alexeiva/badscript) — The Bad Script Project Authors: надпись «Каре» на вывеске и в логотипе, переведена в кривые (`src/data/wordmark.ts`), сам шрифт сайт не загружает
+- [Manrope](https://github.com/sharanda/manrope) — Mikhail Sharanda: основной текст и буквы «АРЕ» в логотипе (переведены в кривые, `src/data/logo.ts`)
 
 ## Код
 
