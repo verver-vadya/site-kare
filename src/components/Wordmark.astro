@@ -1,7 +1,0 @@
----
-// Надпись «Каре» как на неоновой вывеске. neon — со свечением, иначе просто цветом текста.
-import { wordmark } from "../data/wordmark";
-interface Props { neon?: boolean; class?: string; title?: string }
-const { neon = false, class: className, title } = Astro.props;
----
-<svg class:list={[className, { neon }]} viewBox={wordmark.viewBox} role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : "true"} focusable="false"><path d={wordmark.d} /></svg>

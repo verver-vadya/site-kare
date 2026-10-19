@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { url } from "../lib/url";
-import amaticCyr from "../fonts/amatic-sc-cyrillic-700-normal.woff2?url";
+import prataCyr from "../fonts/prata-cyrillic-400-normal.woff2?url";
 import manropeCyr from "../fonts/manrope-cyrillic-400-normal.woff2?url";
 
 interface Props {
@@ -34,7 +34,7 @@ const ogImage = new URL("/assets/img/og.jpg", Astro.site);
   <meta property="og:url" content={canonical}>
   <meta property="og:image" content={ogImage}>
   <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml">
-  <link rel="preload" href={amaticCyr} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={prataCyr} as="font" type="font/woff2" crossorigin>
   <link rel="preload" href={manropeCyr} as="font" type="font/woff2" crossorigin>
   <slot name="head" />
   <script is:inline src={url("/assets/js/main.js")} defer></script>
