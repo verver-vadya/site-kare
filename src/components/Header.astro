@@ -17,6 +17,7 @@ const isCurrent = (href: string) => here === href || here.startsWith(href);
           <li><a href={url(item.href)} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a></li>
         ))}
       </ul>
+      <a class="button site-nav__cta" href={url("/zapis/")}>Записаться онлайн</a>
     </nav>
     <a class="button button--small button--ghost site-header__cta" href={url("/zapis/")}>Записаться</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">

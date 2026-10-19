@@ -1,6 +1,6 @@
 /* Шрифты: свои файлы, без внешних CDN. Лицензии OFL лежат рядом в src/fonts/ */
-@font-face { font-family: "Amatic SC"; src: url("../fonts/amatic-sc-cyrillic-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
-@font-face { font-family: "Amatic SC"; src: url("../fonts/amatic-sc-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Prata"; src: url("../fonts/prata-cyrillic-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Prata"; src: url("../fonts/prata-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Manrope"; src: url("../fonts/manrope-cyrillic-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: "Manrope"; src: url("../fonts/manrope-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Manrope"; src: url("../fonts/manrope-cyrillic-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
@@ -28,15 +28,14 @@
   --color-success-bg: #e3f1e6;
 
   --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Amatic SC", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-display: "Prata", Georgia, "Times New Roman", serif;
 
-  /* Amatic узкий и с маленьким очком, поэтому крупные размеры у заголовков больше обычного */
   --step--1: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --step-1: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
-  --step-2: clamp(2rem, 1.6rem + 1.6vw, 3rem);       /* h3 и подписи шрифтом Amatic */
-  --step-3: clamp(2.75rem, 2rem + 3.2vw, 5rem);      /* h2 */
-  --step-4: clamp(3.5rem, 2.2rem + 5.5vw, 8rem);     /* h1 */
+  --step-2: clamp(1.6rem, 1.35rem + 1vw, 2.4rem);    /* h3, цифры и цитаты шрифтом Prata */
+  --step-3: clamp(2.1rem, 1.6rem + 2.2vw, 3.75rem);  /* h2 */
+  --step-4: clamp(2.75rem, 1.7rem + 4.2vw, 6rem);    /* h1 */
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
@@ -71,7 +70,7 @@ body {
 }
 img, picture, svg, video { display: block; max-width: 100%; height: auto; }
 input, button, textarea, select { font: inherit; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1; letter-spacing: 0.02em; text-wrap: balance; overflow-wrap: break-word; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: break-word; }
 h1 { font-size: var(--step-4); }
 h2 { font-size: var(--step-3); }
 h3 { font-size: var(--step-2); }
@@ -89,10 +88,10 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .skip-link { position: absolute; left: -9999px; z-index: 20; }
 .skip-link:focus { left: 1rem; top: 1rem; background: var(--color-bg); color: var(--color-text); padding: var(--space-xs) var(--space-s); }
 
-/* ---------- Подпись-рубрика: маленькие рукописные капители, как на вывесках ---------- */
+/* ---------- Подпись-рубрика: мелкие заглавные с разрядкой ---------- */
 .label {
-  font-family: var(--font-display); font-weight: 700; font-size: 1.375rem; line-height: 1.1;
-  letter-spacing: 0.08em; color: var(--color-accent);
+  font-weight: 600; font-size: 0.75rem; line-height: 1.4; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--color-accent);
 }
 .lead { font-size: var(--step-1); line-height: 1.5; max-width: 52ch; }
 .muted { color: var(--color-muted); }
@@ -109,7 +108,7 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .site-nav ul { list-style: none; padding: 0 0 var(--space-s); display: grid; }
 .site-nav a {
   display: flex; align-items: center; min-height: var(--tap);
-  font-family: var(--font-display); font-weight: 700; font-size: 1.625rem; letter-spacing: 0.06em; line-height: 1;
+  font-family: var(--font-display); font-size: 1.75rem; line-height: 1;
   color: inherit; text-decoration: none; transition: color var(--duration), opacity var(--duration);
 }
 .site-nav a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
@@ -124,12 +123,16 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 @media (hover: hover) { .nav-toggle:hover { background: rgb(0 0 0 / 0.06); } }
 .nav-toggle:active { opacity: 0.7; }
 .nav-toggle svg { flex-shrink: 0; }
-.site-header__cta { display: none; }
-@media (min-width: 30rem) { .site-header__cta { display: inline-flex; } }
+/* На телефоне в шапке только логотип и «Меню», запись — кнопкой внизу открытого меню */
+.site-header .site-header__cta { display: none; }
+.site-nav .site-nav__cta { display: flex; width: 100%; margin-bottom: var(--space-m); font-family: var(--font-body); font-size: var(--step-0); color: var(--color-accent-contrast); }
 @media (min-width: 62rem) {
   .nav-toggle { display: none; }
+  .site-header .site-header__cta { display: inline-flex; }
+  .site-nav .site-nav__cta { display: none; }
   .site-nav { order: 0; display: block; flex-basis: auto; }
   .site-nav ul { grid-auto-flow: column; gap: clamp(0.75rem, 1.6vw, 1.75rem); padding: 0; }
+  .site-nav a { font-family: var(--font-body); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; }
   .site-header__inner { column-gap: clamp(1rem, 2vw, 2rem); }
 }
 /* Шапка поверх фото на главной: светлый текст, а открытое меню на телефоне получает свой фон */
@@ -146,6 +149,7 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .site-header--over.is-open .button--ghost { color: var(--color-text); }
 @media (hover: hover) { .site-header--over .site-nav a:hover { color: #ffd2bd; } }
 .site-header--over.is-open .site-nav a:hover { color: var(--color-accent); }
+@media (hover: hover) { .site-header .site-nav a.site-nav__cta:hover { color: var(--color-accent-contrast); } }
 
 /* ---------- Кнопки ---------- */
 .button {
@@ -598,7 +602,7 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; text-decoration-t
 .site-footer__brand { --logo-accent: var(--color-accent-bright); }
 .site-footer__brand svg { width: min(15rem, 60vw); color: var(--color-deep-text); }
 .site-footer__brand p { margin-top: var(--space-s); max-width: 30ch; }
-.site-footer h2 { font-size: 1.625rem; color: var(--color-deep-text); margin-bottom: var(--space-xs); letter-spacing: 0.06em; }
+.site-footer h2 { font-family: var(--font-body); font-weight: 600; font-size: 0.75rem; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-deep-text); margin-bottom: var(--space-xs); }
 .site-footer ul { list-style: none; padding: 0; }
 .site-footer li a { display: inline-flex; align-items: center; min-height: 2rem; }
 .site-footer__bottom { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-m); justify-content: space-between; margin-top: var(--space-l); padding-top: var(--space-m); border-top: 1px solid rgb(244 235 224 / 0.18); }

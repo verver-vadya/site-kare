@@ -4,7 +4,7 @@
 
 - Превью: https://verver-vadya.github.io/site-kare/ (после включения GitHub Pages)
 - Стек: [Astro](https://astro.build), на выходе обычные HTML-страницы без лишнего JavaScript; сделан из [site-template](https://github.com/verver-vadya/site-template).
-- Шрифты: Amatic SC и Manrope (OFL), лежат в `src/fonts/`.
+- Шрифты: Prata (заголовки) и Manrope (текст, меню, подписи), оба OFL, лежат в `src/fonts/`.
 
 ## Страницы
 

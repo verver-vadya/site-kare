@@ -56,7 +56,7 @@
 
 Лицензия SIL Open Font License 1.1, тексты лицензий в `src/fonts/OFL-*.txt`. Файлы взяты из пакетов [Fontsource](https://fontsource.org).
 
-- [Amatic SC](https://github.com/googlefonts/AmaticSC) — Vernon Adams, Ben Nathan: заголовки и меню
+- [Prata](https://github.com/cyrealtype/Prata) — Cyreal: заголовки, цифры и цитаты
 - [Manrope](https://github.com/sharanda/manrope) — Mikhail Sharanda: основной текст и буквы «АРЕ» в логотипе (переведены в кривые, `src/data/logo.ts`)
 
 ## Код
